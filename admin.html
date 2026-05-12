@@ -3,170 +3,181 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yönetici Paneli — Kodlama Atölyesi</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-<!-- Netlify Identity Widget -->
+<title>Admin — MiniYazılımcı</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
-:root {
-  --bg:#0f1923;--surface:#18242f;--surface2:#1f2f3d;--surface3:#263545;
-  --scratch:#FFAB19;--arduino:#00979D;--algo:#a78bfa;--green:#73CC80;--red:#f87171;
-  --text:#e8edf5;--muted:#6b7f96;--border:rgba(255,255,255,0.07);--radius:10px;
+:root{
+  --bg:#f0f7e8;--surface:#fff;--surface2:#f5f9f0;--surface3:#eaf3de;
+  --green:#639922;--green-d:#3B6D11;--green-l:#C0DD97;--green-bg:#EAF3DE;
+  --purple:#7F77DD;--purple-d:#534AB7;--purple-l:#CECBF6;--purple-bg:#EEEDFE;
+  --amber:#BA7517;--amber-l:#FAC775;--amber-bg:#FAEEDA;
+  --red:#E24B4A;--muted:#5a7040;--border:rgba(99,153,34,0.15);
+  --text:#1a2a0a;--radius:10px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
 /* GİRİŞ */
-#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 60% 40%,rgba(115,204,128,0.06) 0%,transparent 60%)}
-.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;width:100%;max-width:380px;text-align:center}
-.login-logo{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:28px}
-.login-logo .dot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.login-box h2{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:8px}
-.login-box p{font-size:.85rem;color:var(--muted);margin-bottom:28px;line-height:1.6}
-.btn-netlify-login{
-  width:100%;background:var(--green);color:#0d2010;border:none;border-radius:8px;
-  padding:13px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;
-  cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.btn-netlify-login:hover{opacity:.88}
-.login-info{margin-top:20px;font-size:.75rem;color:var(--muted);line-height:1.6;background:var(--surface2);border-radius:8px;padding:12px}
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green-bg),var(--purple-bg))}
+.login-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:40px;width:100%;max-width:380px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.login-logo{font-size:1.2rem;font-weight:900;color:var(--green-d);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px}
+.login-logo-icon{width:38px;height:38px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.login-box h2{font-size:1.3rem;font-weight:900;color:var(--text);margin-bottom:8px}
+.login-box p{font-size:.85rem;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.btn-login{width:100%;background:var(--green);color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;transition:.2s}
+.btn-login:hover{background:var(--green-d)}
+.login-hint{margin-top:16px;font-size:.75rem;color:var(--muted);background:var(--green-bg);border-radius:8px;padding:10px;line-height:1.6}
 
 /* PANEL */
 #panel{display:none;min-height:100vh;flex-direction:row}
-.sidebar{width:220px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 12px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:8px;padding:4px 10px 20px}
-.sidebar-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-.sidebar-section{font-size:.65rem;font-weight:600;letter-spacing:1px;color:var(--muted);text-transform:uppercase;padding:0 10px;margin:16px 0 6px}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
-.nav-item:hover{background:var(--surface2);color:var(--text)}
-.nav-item.active{background:var(--surface3);color:var(--text)}
-.nav-item .nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.user-info{padding:10px;background:var(--surface2);border-radius:8px;margin-bottom:12px;font-size:.78rem;color:var(--muted)}
-.user-info strong{color:var(--text);display:block;margin-bottom:2px;font-size:.82rem}
-.sidebar-bottom{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
-.btn-logout{width:100%;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:8px;cursor:pointer;transition:.2s}
+.sidebar{width:230px;min-height:100vh;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 12px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-weight:900;font-size:1rem;color:var(--green-d);display:flex;align-items:center;gap:8px;padding:4px 8px 18px}
+.sidebar-logo-icon{width:30px;height:30px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.sidebar-sec{font-size:.65rem;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase;padding:0 10px;margin:14px 0 6px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--green-bg);color:var(--green-d)}
+.nav-item.active{background:var(--green-bg);color:var(--green-d)}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.user-chip{background:var(--green-bg);border-radius:8px;padding:8px 10px;margin-bottom:12px;font-size:.78rem;color:var(--muted)}
+.user-chip strong{color:var(--green-d);display:block;font-size:.82rem;margin-bottom:1px}
+.sidebar-bottom{margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+.btn-logout{width:100%;background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:700;padding:8px;cursor:pointer;transition:.2s}
 .btn-logout:hover{border-color:var(--red);color:var(--red)}
 
 /* MAIN */
-.main{flex:1;padding:32px 36px;overflow-y:auto;min-height:100vh}
-.page{display:none}
-.page.active{display:block}
-.page-header{margin-bottom:28px}
-.page-header h1{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:4px}
+.main{flex:1;padding:28px 32px;overflow-y:auto}
+.page{display:none}.page.active{display:block}
+.page-header{margin-bottom:24px}
+.page-header h1{font-size:1.35rem;font-weight:900;margin-bottom:3px}
 .page-header p{font-size:.85rem;color:var(--muted)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
-.stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:2px}
-.stat-label{font-size:.78rem;color:var(--muted)}
-.item-list{display:flex;flex-direction:column;gap:8px}
-.item-row{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;display:flex;align-items:center;gap:12px;transition:border-color .2s}
-.item-row:hover{border-color:rgba(255,255,255,.15)}
-.item-badge{font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.item-title{font-size:.9rem;font-weight:500;flex:1}
-.item-sub{font-size:.78rem;color:var(--muted);margin-top:2px;display:block}
-.item-actions{display:flex;gap:6px;flex-shrink:0}
-.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:.75rem;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif}
-.btn-icon:hover{background:var(--surface3);color:var(--text)}
-.btn-icon.del:hover{border-color:var(--red);color:var(--red);background:rgba(248,113,113,.08)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* STAT */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stat-num{font-size:1.8rem;font-weight:900;margin-bottom:2px}
+.stat-label{font-size:.75rem;color:var(--muted);font-weight:700}
+
+/* KART */
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+.sec-title{font-size:.92rem;font-weight:900;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;color:var(--text)}
+.item-list{display:flex;flex-direction:column;gap:7px}
+.item-row{background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;display:flex;align-items:center;gap:10px;transition:border-color .15s}
+.item-row:hover{border-color:var(--green-l)}
+.item-badge{font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.item-title{font-size:.88rem;font-weight:700;flex:1}
+.item-sub{font-size:.75rem;color:var(--muted);margin-top:1px;display:block;font-weight:600}
+.item-actions{display:flex;gap:5px;flex-shrink:0}
+.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:700;cursor:pointer;transition:.15s;font-family:'Nunito',sans-serif}
+.btn-icon:hover{background:var(--green-bg);color:var(--green-d)}
+.btn-icon.del:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
+.empty{color:var(--muted);font-size:.85rem;padding:20px 0;text-align:center;font-weight:700}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-full{grid-column:1/-1}
-.form-field{display:flex;flex-direction:column;gap:6px}
-.form-field label{font-size:.78rem;font-weight:500;color:var(--muted);letter-spacing:.3px}
-.form-field input,.form-field textarea,.form-field select{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:.2s}
-.form-field input:focus,.form-field textarea:focus{border-color:rgba(115,204,128,.4)}
-.form-field textarea{resize:vertical;min-height:90px}
-.form-hint{font-size:.72rem;color:var(--muted);margin-top:2px}
-.steps-list{display:flex;flex-direction:column;gap:6px}
-.step-row{display:flex;gap:8px;align-items:center}
+.form-field{display:flex;flex-direction:column;gap:5px}
+.form-field label{font-size:.72rem;font-weight:800;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+.form-field input,.form-field textarea,.form-field select{background:var(--green-bg);border:1px solid var(--green-l);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:600;outline:none;transition:.2s}
+.form-field input:focus,.form-field textarea:focus{border-color:var(--green);background:#fff}
+.form-field textarea{resize:vertical;min-height:80px}
+.form-hint{font-size:.7rem;color:var(--muted);font-weight:600}
+.steps-list{display:flex;flex-direction:column;gap:5px}
+.step-row{display:flex;gap:7px;align-items:center}
 .step-row input{flex:1}
-.btn-add-step{background:none;border:1px dashed var(--border);border-radius:8px;color:var(--muted);padding:8px;font-size:.8rem;cursor:pointer;transition:.2s;width:100%;margin-top:4px;font-family:'DM Sans',sans-serif}
-.btn-add-step:hover{border-color:var(--green);color:var(--green)}
+.btn-add-step{background:none;border:1px dashed var(--green-l);border-radius:8px;color:var(--muted);padding:7px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;width:100%;margin-top:3px;font-family:'Nunito',sans-serif}
+.btn-add-step:hover{border-color:var(--green);color:var(--green-d)}
 .btn-remove-step{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:2px 6px;border-radius:4px;transition:.15s;flex-shrink:0}
 .btn-remove-step:hover{color:var(--red)}
-.btn-save{background:var(--green);color:#0d2010;border:none;border-radius:8px;padding:10px 22px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:.2s}
-.btn-save:hover{opacity:.88}
-.btn-cancel{background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;transition:.2s}
+.btn-save{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;transition:.2s}
+.btn-save:hover{background:var(--green-d)}
+.btn-cancel{background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:.2s}
 .btn-cancel:hover{color:var(--text)}
-.form-actions{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,10,18,.85);z-index:100;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:600px;padding:28px;max-height:90vh;overflow-y:auto}
-.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.modal-header h2{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
-.btn-close{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:.2s}
-.btn-close:hover{color:var(--text)}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--surface3);border:1px solid rgba(115,204,128,.3);border-radius:10px;padding:12px 18px;font-size:.85rem;color:var(--text);z-index:200;transform:translateY(80px);opacity:0;transition:.3s;pointer-events:none}
-.toast.show{transform:translateY(0);opacity:1}
-.export-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px}
-.export-box pre{font-size:.72rem;color:var(--muted);overflow-x:auto;max-height:200px;font-family:monospace}
-.btn-export{background:var(--algo);color:#1a1040;border:none;border-radius:8px;padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s}
-.btn-export:hover{opacity:.88}
-.sec-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.btn-new{background:var(--green);color:#0d2010;border:none;border-radius:7px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s}
-.btn-new:hover{opacity:.88}
-.empty{color:var(--muted);font-size:.85rem;padding:20px 0;text-align:center}
+.btn-new{background:var(--green);color:#fff;border:none;border-radius:7px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;transition:.2s}
+.btn-new:hover{background:var(--green-d)}
+.form-actions{display:flex;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
 
-/* ŞİFRE DEĞİŞTİR */
-.netlify-pass-info{background:var(--surface2);border:1px solid rgba(115,204,128,.2);border-radius:10px;padding:16px;font-size:.85rem;color:var(--muted);line-height:1.7}
-.netlify-pass-info strong{color:var(--green)}
-.btn-change-pass{background:var(--green);color:#0d2010;border:none;border-radius:8px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:.2s;margin-top:14px;display:inline-block}
-.btn-change-pass:hover{opacity:.88}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,15,2,.75);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:600px;padding:26px;max-height:92vh;overflow-y:auto;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-header h2{font-size:1.05rem;font-weight:900;color:var(--text)}
+.btn-close{background:var(--green-bg);border:none;color:var(--muted);border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.2s}
+.btn-close:hover{color:var(--red)}
+
+/* MENÜ YÖNETİMİ */
+.menu-manager{display:flex;flex-direction:column;gap:8px}
+.menu-row{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;transition:border-color .15s}
+.menu-row:hover{border-color:var(--green-l)}
+.drag-handle{color:var(--muted);cursor:grab;font-size:1.1rem;flex-shrink:0;padding:0 4px}
+.menu-row-info{flex:1}
+.menu-row-name{font-size:.9rem;font-weight:800;color:var(--text)}
+.menu-row-id{font-size:.72rem;color:var(--muted);font-weight:600}
+.toggle-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:.2s}
+.toggle-btn.on{background:var(--green-bg);color:var(--green-d);border-color:var(--green-l)}
+.toggle-btn.off{background:#fff5f5;color:var(--red);border-color:#fecaca}
+.menu-edit-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:700;cursor:pointer;transition:.15s;font-family:'Nunito',sans-serif}
+.menu-edit-btn:hover{background:var(--green-bg);color:var(--green-d)}
+
+/* DIŞA AKTAR */
+.btn-export{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;transition:.2s}
+.btn-export:hover{background:var(--purple-d)}
+.export-box{background:var(--green-bg);border:1px solid var(--green-l);border-radius:8px;padding:14px;margin-top:14px}
+.export-box pre{font-size:.7rem;color:var(--muted);overflow-x:auto;max-height:180px;font-family:monospace}
+
+/* ŞİFRE */
+.pass-info{background:var(--green-bg);border:1px solid var(--green-l);border-radius:10px;padding:14px;font-size:.85rem;color:var(--muted);line-height:1.7}
+.pass-info strong{color:var(--green-d)}
+.btn-pass{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;transition:.2s;margin-top:12px;display:inline-block}
+.btn-pass:hover{background:var(--green-d)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green-d);color:#fff;border-radius:10px;padding:11px 18px;font-size:.85rem;font-weight:700;z-index:200;transform:translateY(80px);opacity:0;transition:.3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:600px){.sidebar{width:200px}.main{padding:20px 16px}}
 </style>
 </head>
 <body>
 
-<!-- GİRİŞ EKRANI -->
+<!-- GİRİŞ -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-logo"><span class="dot"></span>Kodlama Atölyesi</div>
-    <h2>Yönetici Girişi</h2>
-    <p>Güvenli giriş için Netlify hesabınla devam et.<br>Şifreni unutursan e-posta ile sıfırlayabilirsin.</p>
-    <button class="btn-netlify-login" onclick="netlifyIdentity.open('login')">
-      🔐 Giriş Yap
-    </button>
-    <div class="login-info">
-      Şifreni mi unuttun? Giriş ekranında <strong style="color:var(--green)">"Forgot password?"</strong> linkine tıkla — e-postana sıfırlama bağlantısı gelir.
+    <div class="login-logo">
+      <div class="login-logo-icon">🌱</div>
+      MiniYazılımcı
     </div>
+    <h2>Yönetici Girişi</h2>
+    <p>Devam etmek için Netlify hesabınla giriş yap.</p>
+    <button class="btn-login" onclick="netlifyIdentity.open('login')">🔐 Giriş Yap</button>
+    <div class="login-hint">Şifreni mi unuttun? Giriş ekranında <strong>"Forgot password?"</strong> linkine tıkla — e-postana sıfırlama bağlantısı gelir.</div>
   </div>
 </div>
 
-<!-- YÖNETİCİ PANELİ -->
+<!-- PANEL -->
 <div id="panel">
   <div class="sidebar">
-    <div class="sidebar-logo"><span class="dot"></span>Admin Paneli</div>
-    <div class="user-info" id="user-info">
-      <strong id="user-email">—</strong>
-      Yönetici
-    </div>
-    <div class="sidebar-section">Genel</div>
-    <button class="nav-item active" onclick="goster('ozet')" id="nav-ozet">
-      <span class="nav-dot" style="background:var(--green)"></span>Özet
-    </button>
-    <div class="sidebar-section">İçerikler</div>
-    <button class="nav-item" onclick="goster('scratch')" id="nav-scratch">
-      <span class="nav-dot" style="background:var(--scratch)"></span>Scratch
-    </button>
-    <button class="nav-item" onclick="goster('arduino')" id="nav-arduino">
-      <span class="nav-dot" style="background:var(--arduino)"></span>Arduino
-    </button>
-    <button class="nav-item" onclick="goster('algoritma')" id="nav-algoritma">
-      <span class="nav-dot" style="background:var(--algo)"></span>Algoritma
-    </button>
-    <button class="nav-item" onclick="goster('vitrin')" id="nav-vitrin">
-      <span class="nav-dot" style="background:var(--scratch)"></span>Gurur Tablosu
-    </button>
-    <div class="sidebar-section">Ayarlar</div>
-    <button class="nav-item" onclick="goster('site')" id="nav-site">
-      <span class="nav-dot" style="background:var(--muted)"></span>Site Bilgileri
-    </button>
-    <button class="nav-item" onclick="goster('sifre')" id="nav-sifre">
-      <span class="nav-dot" style="background:var(--muted)"></span>Şifre Değiştir
-    </button>
-    <button class="nav-item" onclick="goster('disaaktar')" id="nav-disaaktar">
-      <span class="nav-dot" style="background:var(--algo)"></span>Dışa Aktar
-    </button>
+    <div class="sidebar-logo"><div class="sidebar-logo-icon">🌱</div>Admin</div>
+    <div class="user-chip"><strong id="user-email">—</strong>Yönetici</div>
+
+    <div class="sidebar-sec">Genel</div>
+    <button class="nav-item active" onclick="goster('ozet')" id="nav-ozet"><span class="nav-dot" style="background:var(--green)"></span>Özet</button>
+
+    <div class="sidebar-sec">İçerikler</div>
+    <button class="nav-item" onclick="goster('scratch')" id="nav-scratch"><span class="nav-dot" style="background:#378ADD"></span>Scratch</button>
+    <button class="nav-item" onclick="goster('tinkercad')" id="nav-tinkercad"><span class="nav-dot" style="background:#BA7517"></span>Tinkercad</button>
+    <button class="nav-item" onclick="goster('arduino')" id="nav-arduino"><span class="nav-dot" style="background:var(--green)"></span>Arduino</button>
+    <button class="nav-item" onclick="goster('algoritma')" id="nav-algoritma"><span class="nav-dot" style="background:var(--purple)"></span>Algoritma</button>
+    <button class="nav-item" onclick="goster('yapay_zeka')" id="nav-yapay_zeka"><span class="nav-dot" style="background:#D4537E"></span>Yapay Zeka</button>
+
+    <div class="sidebar-sec">Yönetim</div>
+    <button class="nav-item" onclick="goster('menuler')" id="nav-menuler"><span class="nav-dot" style="background:var(--muted)"></span>Menü Yönetimi</button>
+    <button class="nav-item" onclick="goster('site')" id="nav-site"><span class="nav-dot" style="background:var(--muted)"></span>Site Bilgileri</button>
+    <button class="nav-item" onclick="goster('sifre')" id="nav-sifre"><span class="nav-dot" style="background:var(--muted)"></span>Şifre Değiştir</button>
+    <button class="nav-item" onclick="goster('disaaktar')" id="nav-disaaktar"><span class="nav-dot" style="background:var(--purple)"></span>Dışa Aktar</button>
+
     <div class="sidebar-bottom">
       <button class="btn-logout" onclick="cikisYap()">Çıkış Yap</button>
     </div>
@@ -175,93 +186,102 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="main">
     <!-- ÖZET -->
     <div class="page active" id="page-ozet">
-      <div class="page-header"><h1>Hoş geldin 👋</h1><p>Kodlama Atölyesi yönetici paneli</p></div>
+      <div class="page-header"><h1>Hoş geldin 👋</h1><p>MiniYazılımcı yönetici paneli</p></div>
       <div class="stat-grid" id="stat-grid"></div>
-      <div class="card"><div class="sec-title">Son Eklenenler</div><div id="son-eklenenler" class="item-list"></div></div>
+      <div class="card"><div class="sec-title">Son Eklenenler</div><div class="item-list" id="son-eklenenler"></div></div>
     </div>
 
-    <!-- SCRATCH -->
+    <!-- BÖLÜM SAYFALARI (scratch, tinkercad, arduino, algoritma, yapay_zeka) -->
     <div class="page" id="page-scratch">
-      <div class="page-header"><h1>Scratch Projeleri</h1><p>Scratch bölümündeki proje kartlarını yönet</p></div>
-      <div class="sec-title">Projeler<button class="btn-new" onclick="modalAc('scratch')">+ Yeni Proje</button></div>
+      <div class="page-header"><h1>🐱 Scratch</h1><p>Scratch bölümündeki içerikleri yönet</p></div>
+      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('scratch')">+ Yeni Ekle</button></div>
       <div class="item-list" id="list-scratch"></div>
     </div>
-
-    <!-- ARDUINO -->
+    <div class="page" id="page-tinkercad">
+      <div class="page-header"><h1>🔧 Tinkercad</h1><p>Tinkercad bölümündeki içerikleri yönet</p></div>
+      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('tinkercad')">+ Yeni Ekle</button></div>
+      <div class="item-list" id="list-tinkercad"></div>
+    </div>
     <div class="page" id="page-arduino">
-      <div class="page-header"><h1>Arduino Projeleri</h1><p>Arduino bölümündeki proje kartlarını yönet</p></div>
-      <div class="sec-title">Projeler<button class="btn-new" onclick="modalAc('arduino')">+ Yeni Proje</button></div>
+      <div class="page-header"><h1>⚡ Arduino</h1><p>Arduino bölümündeki içerikleri yönet</p></div>
+      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('arduino')">+ Yeni Ekle</button></div>
       <div class="item-list" id="list-arduino"></div>
     </div>
-
-    <!-- ALGORİTMA -->
     <div class="page" id="page-algoritma">
-      <div class="page-header"><h1>Algoritma Konuları</h1><p>Algoritma bölümündeki konu kartlarını yönet</p></div>
-      <div class="sec-title">Konular<button class="btn-new" onclick="modalAc('algoritma')">+ Yeni Konu</button></div>
+      <div class="page-header"><h1>🧩 Algoritma</h1><p>Algoritma bölümündeki içerikleri yönet</p></div>
+      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('algoritma')">+ Yeni Ekle</button></div>
       <div class="item-list" id="list-algoritma"></div>
     </div>
+    <div class="page" id="page-yapay_zeka">
+      <div class="page-header"><h1>🤖 Yapay Zeka</h1><p>Yapay Zeka bölümündeki içerikleri yönet</p></div>
+      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('yapay_zeka')">+ Yeni Ekle</button></div>
+      <div class="item-list" id="list-yapay_zeka"></div>
+    </div>
 
-    <!-- VİTRİN -->
-    <div class="page" id="page-vitrin">
-      <div class="page-header"><h1>Gurur Tablosu</h1><p>Öğrenci başarılarını düzenle</p></div>
-      <div class="sec-title">Öğrenciler<button class="btn-new" onclick="modalAc('vitrin')">+ Ekle</button></div>
-      <div class="item-list" id="list-vitrin"></div>
+    <!-- MENÜ YÖNETİMİ -->
+    <div class="page" id="page-menuler">
+      <div class="page-header"><h1>Menü Yönetimi</h1><p>Menü sırası, görünürlük ve isim düzenle</p></div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="sec-title" style="margin-bottom:14px">Menüler <button class="btn-new" onclick="yeniMenuModal()">+ Yeni Menü</button></div>
+        <div class="menu-manager" id="menu-manager"></div>
+      </div>
+      <div class="card">
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.7">
+          <strong style="color:var(--text)">Aktif / Pasif:</strong> Pasif menüler sitede görünmez.<br>
+          <strong style="color:var(--text)">Yeni menü:</strong> Yeni bir bölüm ekledikten sonra içeriklerini buradan gir.<br>
+          <strong style="color:var(--text)">Sıralama:</strong> Değişiklikleri kaydet butonuna basmayı unutma.
+        </p>
+        <div class="form-actions" style="margin-top:14px;padding-top:14px">
+          <button class="btn-save" onclick="menuKaydet()">Değişiklikleri Kaydet</button>
+        </div>
+      </div>
     </div>
 
     <!-- SİTE BİLGİLERİ -->
     <div class="page" id="page-site">
-      <div class="page-header"><h1>Site Bilgileri</h1><p>Ana sayfada görünen metinler ve öğretmen bilgileri</p></div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="sec-title" style="margin-bottom:16px">Genel</div>
+      <div class="page-header"><h1>Site Bilgileri</h1><p>Genel site ayarları ve hakkımda bölümü</p></div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="sec-title" style="margin-bottom:14px">Genel</div>
         <div class="form-grid">
-          <div class="form-field"><label>SİTE BAŞLIĞI</label><input id="site-baslik" type="text"></div>
-          <div class="form-field"><label>SLOGAN</label><input id="site-slogan" type="text"></div>
-          <div class="form-field form-full"><label>ANA SAYFA AÇIKLAMASI</label><textarea id="site-aciklama" rows="2"></textarea></div>
+          <div class="form-field"><label>SİTE BAŞLIĞI</label><input id="s-baslik" type="text"></div>
+          <div class="form-field"><label>SLOGAN</label><input id="s-slogan" type="text"></div>
         </div>
       </div>
       <div class="card">
-        <div class="sec-title" style="margin-bottom:16px">Hakkımda</div>
+        <div class="sec-title" style="margin-bottom:14px">Hakkımda</div>
         <div class="form-grid">
-          <div class="form-field"><label>İSİM</label><input id="hk-isim" type="text"></div>
-          <div class="form-field"><label>ÜNVAN</label><input id="hk-unvan" type="text"></div>
-          <div class="form-field form-full"><label>BİYOGRAFİ 1</label><textarea id="hk-bio1" rows="2"></textarea></div>
-          <div class="form-field form-full"><label>BİYOGRAFİ 2</label><textarea id="hk-bio2" rows="2"></textarea></div>
-          <div class="form-field"><label>E-POSTA</label><input id="hk-eposta" type="email"></div>
-          <div class="form-field"><label>SINIF / ODA</label><input id="hk-sinif" type="text"></div>
-          <div class="form-field"><label>MESAİ SAATLERİ</label><input id="hk-mesai" type="text"></div>
-          <div class="form-field"><label>VERDİĞİM DERSLER <span class="form-hint">(virgülle ayır)</span></label><input id="hk-dersler" type="text"></div>
+          <div class="form-field"><label>İSİM</label><input id="h-isim" type="text"></div>
+          <div class="form-field"><label>ÜNVAN</label><input id="h-unvan" type="text"></div>
+          <div class="form-field form-full"><label>BİYOGRAFİ 1</label><textarea id="h-bio1" rows="2"></textarea></div>
+          <div class="form-field form-full"><label>BİYOGRAFİ 2</label><textarea id="h-bio2" rows="2"></textarea></div>
+          <div class="form-field"><label>E-POSTA</label><input id="h-eposta" type="email"></div>
+          <div class="form-field"><label>SINIF</label><input id="h-sinif" type="text"></div>
+          <div class="form-field"><label>MESAİ</label><input id="h-mesai" type="text"></div>
+          <div class="form-field"><label>DERSLER <span class="form-hint">(virgülle ayır)</span></label><input id="h-dersler" type="text"></div>
         </div>
-        <div class="form-actions"><button class="btn-save" onclick="siteBilgileriniKaydet()">Kaydet</button></div>
+        <div class="form-actions"><button class="btn-save" onclick="siteBilgKaydet()">Kaydet</button></div>
       </div>
     </div>
 
-    <!-- ŞİFRE DEĞİŞTİR -->
+    <!-- ŞİFRE -->
     <div class="page" id="page-sifre">
-      <div class="page-header"><h1>Şifre Değiştir</h1><p>Netlify hesabın üzerinden güvenli şifre yönetimi</p></div>
-      <div class="card" style="max-width:460px">
-        <div class="netlify-pass-info">
-          Şifren <strong>Netlify'ın güvenli sunucusunda</strong> saklanır — site kodunda hiçbir şekilde görünmez.<br><br>
-          Şifreni değiştirmek için aşağıdaki butona tıkla. Netlify sana e-posta gönderecek, oradan yeni şifreni belirleyebilirsin.
-        </div>
-        <button class="btn-change-pass" onclick="sifreSifirla()">📧 Şifre Sıfırlama E-postası Gönder</button>
-        <div id="sifre-msg" style="margin-top:12px;font-size:.82rem;color:var(--green)"></div>
+      <div class="page-header"><h1>Şifre Değiştir</h1><p>Netlify Identity üzerinden güvenli şifre yönetimi</p></div>
+      <div class="card" style="max-width:440px">
+        <div class="pass-info">Şifren <strong>Netlify'ın güvenli sunucusunda</strong> saklanır. Aşağıdaki butona tıkla, e-postana şifre sıfırlama bağlantısı gelir.</div>
+        <button class="btn-pass" onclick="sifreSifirla()">📧 Şifre Sıfırlama E-postası Gönder</button>
+        <div id="sifre-msg" style="margin-top:10px;font-size:.82rem;color:var(--green-d);font-weight:700"></div>
       </div>
     </div>
 
     <!-- DIŞA AKTAR -->
     <div class="page" id="page-disaaktar">
-      <div class="page-header"><h1>Dışa Aktar</h1><p>İçerikleri indirip GitHub'a yükle, site otomatik güncellenir</p></div>
+      <div class="page-header"><h1>Dışa Aktar</h1><p>İndirip GitHub'a yükle → Netlify otomatik günceller</p></div>
       <div class="card">
-        <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px;line-height:1.7">
-          Panelde yaptığın tüm değişiklikler tarayıcında saklanır. Aşağıdaki butona tıklayarak
-          <strong style="color:var(--text)">icerikler.js</strong> dosyasını indir,
-          GitHub reposuna yükle — Netlify otomatik günceller.
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px;line-height:1.7">
+          Panelde yaptığın değişiklikler tarayıcında saklanır. <strong style="color:var(--text)">icerikler.js</strong> dosyasını indirip GitHub reposuna yükle — Netlify otomatik yayına alır.
         </p>
-        <button class="btn-export" onclick="disaAktar()">⬇ icerikler.js Dosyasını İndir</button>
-        <div class="export-box" style="margin-top:16px">
-          <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px">Önizleme</div>
-          <pre id="export-preview"></pre>
-        </div>
+        <button class="btn-export" onclick="disaAktar()">⬇ icerikler.js İndir</button>
+        <div class="export-box"><div style="font-size:.72rem;color:var(--muted);margin-bottom:6px;font-weight:700">Önizleme</div><pre id="export-preview"></pre></div>
       </div>
     </div>
   </div>
@@ -269,9 +289,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="modalKapat(event)">
-  <div class="modal" id="modal-box">
+  <div class="modal">
     <div class="modal-header">
-      <h2 id="modal-baslik">Yeni Proje</h2>
+      <h2 id="modal-baslik">Yeni İçerik</h2>
       <button class="btn-close" onclick="modalKapat(null,true)">✕</button>
     </div>
     <div id="modal-form"></div>
@@ -281,150 +301,224 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══ VERİ ══ */
-const DEPO_KEY='ogretmen_icerik';
-const VARSAYILAN={
-  site:{baslik:'Kodlama Atölyesi',slogan:'2025–2026 Eğitim Yılı · Aktif',hero_h1_1:'Merhaba,',hero_h1_2:'genç yazılımcı &',hero_h1_3:'mühendis!',hero_aciklama:'Bugün hayalindeki projeyi gerçeğe dönüştürmeye hazır mısın?',footer:'© 2026 Geleceği Kodlayanlar Atölyesi · Bir öğretmenin dijital sınıfı 🚀'},
-  hakkimda:{isim:'Öğretmen Adı Soyadı',unvan:'Teknoloji & Kodlama Öğretmeni',biyografi_1:'Merhaba! Geleceği kodlayanlar atölyesine hoş geldin.',biyografi_2:'Scratch, Arduino ve algoritma dünyasında birlikte keşfediyoruz!',dersler:['Scratch','Arduino','Algoritma','Robotik'],eposta:'ornek@okul.edu.tr',sinif:'D-12 Kodlama Atölyesi',mesai:'Pazartesi–Cuma, 08:00–17:00'},
-  scratch_projeleri:[{id:'s1',baslik:'Hayvan Yarışı',kisa_aciklama:'Temel hareket blokları ile iki oyunculu koşu yarışı.',konu_anlatimi:'Sprite\'ları klavye tuşlarıyla kontrol etmeyi öğreniyoruz.',adimlar:['Sahneye iki sprite ekle','Klavye kontrollerini ayarla'],scratch_link:'https://scratch.mit.edu',pdf_link:'',video_embed:''}],
-  arduino_projeleri:[{id:'a1',baslik:'LED Yakıp Söndürme',kisa_aciklama:'İlk Arduino kodumuzu yazıyoruz.',konu_anlatimi:'digitalWrite ile LED kontrolü.',adimlar:['Wokwi\'yi aç','LED bağla','Kodu yaz'],wokwi_link:'https://wokwi.com',pdf_link:'',video_embed:''}],
-  algoritma_konulari:[{id:'alg1',baslik:'Algoritma Nedir?',kisa_aciklama:'Adım adım çözüm yöntemi.',konu_anlatimi:'Algoritma belirli bir problemi çözmek için izlenen talimatlardır.',adimlar:['Problemi tanımla','Girdileri belirle'],pdf_link:'',video_embed:''}],
-  vitrin:[{sira:1,isim:'Zeynep A.',proje:'Yıldız Avcısı',aciklama:'Scratch · Platform oyunu',puan:98}]
+const DEPO = 'miniyazilimci_icerik';
+
+const VARSAYILAN = {
+  site:{baslik:'MiniYazılımcı',slogan:'2025–2026 · Kodlamayı Öğreniyoruz!',footer:'© 2026 MiniYazılımcı · Birlikte öğreniyoruz 🌱'},
+  menuler:[
+    {id:'scratch',baslik:'Scratch',aktif:true,sira:1},
+    {id:'tinkercad',baslik:'Tinkercad',aktif:true,sira:2},
+    {id:'arduino',baslik:'Arduino',aktif:true,sira:3},
+    {id:'algoritma',baslik:'Algoritma',aktif:true,sira:4},
+    {id:'yapay_zeka',baslik:'Yapay Zeka',aktif:true,sira:5}
+  ],
+  bolumler:{scratch:[],tinkercad:[],arduino:[],algoritma:[],yapay_zeka:[]},
+  hakkimda:{isim:'Öğretmen Adı',unvan:'Kodlama Öğretmeni',biyografi_1:'',biyografi_2:'',dersler:[],eposta:'',sinif:'',mesai:''}
 };
-function veriYukle(){try{return JSON.parse(localStorage.getItem(DEPO_KEY))||structuredClone(VARSAYILAN)}catch(e){return structuredClone(VARSAYILAN)}}
-function veriKaydet(d){localStorage.setItem(DEPO_KEY,JSON.stringify(d))}
-let D=veriYukle();
 
-/* ══ NETLİFY IDENTITY ══ */
-netlifyIdentity.on('init', user => { if(user) panelAc(user); });
-netlifyIdentity.on('login', user => { netlifyIdentity.close(); panelAc(user); });
-netlifyIdentity.on('logout', () => { document.getElementById('panel').style.display='none'; document.getElementById('login-screen').style.display='flex'; });
+function veriYukle(){try{return JSON.parse(localStorage.getItem(DEPO))||structuredClone(VARSAYILAN)}catch{return structuredClone(VARSAYILAN)}}
+function veriKaydet(d){localStorage.setItem(DEPO,JSON.stringify(d))}
+let D = veriYukle();
 
-function panelAc(user){
+/* ══ NETLIFY IDENTITY ══ */
+netlifyIdentity.on('init',u=>{if(u)panelAc(u)});
+netlifyIdentity.on('login',u=>{netlifyIdentity.close();panelAc(u)});
+netlifyIdentity.on('logout',()=>{document.getElementById('panel').style.display='none';document.getElementById('login-screen').style.display='flex'});
+
+function panelAc(u){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('panel').style.display='flex';
-  document.getElementById('user-email').textContent=user.email||'Yönetici';
-  panelYenile();
+  document.getElementById('user-email').textContent=u.email||'Yönetici';
+  ozetYenile();
 }
-
-function cikisYap(){ netlifyIdentity.logout(); }
-
+function cikisYap(){netlifyIdentity.logout()}
 function sifreSifirla(){
-  const user=netlifyIdentity.currentUser();
-  if(!user){toast('Önce giriş yapmalısın.');return;}
-  fetch('/.netlify/identity/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:user.email})})
-    .then(()=>{ document.getElementById('sifre-msg').textContent='Şifre sıfırlama e-postası gönderildi ✓'; })
-    .catch(()=>{ document.getElementById('sifre-msg').textContent='E-posta gönderildi (spam klasörünü kontrol et) ✓'; });
+  const u=netlifyIdentity.currentUser();
+  if(!u)return;
+  fetch('/.netlify/identity/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:u.email})})
+    .then(()=>{document.getElementById('sifre-msg').textContent='E-posta gönderildi ✓'})
+    .catch(()=>{document.getElementById('sifre-msg').textContent='E-posta gönderildi (spam klasörünü kontrol et) ✓'});
 }
 
 /* ══ NAVİGASYON ══ */
-function goster(sayfa){
+function goster(s){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+sayfa).classList.add('active');
-  document.getElementById('nav-'+sayfa).classList.add('active');
-  if(sayfa==='ozet') ozetYenile();
-  if(['scratch','arduino','algoritma','vitrin'].includes(sayfa)) listeYenile(sayfa);
-  if(sayfa==='site') siteBilgileriniYukle();
-  if(sayfa==='disaaktar') onizlemeGuncelle();
+  document.getElementById('page-'+s).classList.add('active');
+  document.getElementById('nav-'+s).classList.add('active');
+  if(s==='ozet') ozetYenile();
+  else if(['scratch','tinkercad','arduino','algoritma','yapay_zeka'].includes(s)) listeYenile(s);
+  else if(s==='menuler') menuYonetimYenile();
+  else if(s==='site') siteBilgYukle();
+  else if(s==='disaaktar') onizlemeGuncelle();
 }
 
 /* ══ ÖZET ══ */
 function ozetYenile(){
-  const d=D;
-  document.getElementById('stat-grid').innerHTML=[
-    {num:d.scratch_projeleri.length,label:'Scratch Projesi',renk:'var(--scratch)'},
-    {num:d.arduino_projeleri.length,label:'Arduino Projesi',renk:'var(--arduino)'},
-    {num:d.algoritma_konulari.length,label:'Algoritma Konusu',renk:'var(--algo)'},
-    {num:d.vitrin.length,label:'Vitrin Kaydı',renk:'#FFD700'},
-  ].map(s=>`<div class="stat-card"><div class="stat-num" style="color:${s.renk}">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
-  const tumIcerik=[...d.scratch_projeleri.map(p=>({...p,tip:'scratch'})),...d.arduino_projeleri.map(p=>({...p,tip:'arduino'})),...d.algoritma_konulari.map(p=>({...p,tip:'algoritma'}))].slice(-5).reverse();
-  document.getElementById('son-eklenenler').innerHTML=tumIcerik.length?tumIcerik.map(i=>satir(i,i.tip,true)).join(''):'<div class="empty">Henüz içerik eklenmedi.</div>';
+  const bolumler=D.bolumler||{};
+  const stats=Object.entries(bolumler).map(([k,v])=>({id:k,sayi:v.length}));
+  document.getElementById('stat-grid').innerHTML=stats.map(s=>`
+    <div class="stat-card">
+      <div class="stat-num" style="color:var(--green)">${s.sayi}</div>
+      <div class="stat-label">${s.id}</div>
+    </div>`).join('');
+  const tumIcerik=Object.entries(bolumler).flatMap(([k,v])=>v.map(i=>({...i,bolum:k}))).slice(-6).reverse();
+  document.getElementById('son-eklenenler').innerHTML=tumIcerik.length
+    ?tumIcerik.map(i=>`<div class="item-row">
+      <span class="item-badge" style="background:var(--green-bg);color:var(--green-d)">${i.bolum}</span>
+      <div style="flex:1"><div class="item-title">${esc(i.baslik)}</div></div></div>`).join('')
+    :'<div class="empty">Henüz içerik eklenmedi.</div>';
 }
-function panelYenile(){ozetYenile();}
 
-/* ══ LİSTE ══ */
-const TIP={scratch:{dizi:'scratch_projeleri',renk:'var(--scratch)',etiket:'Scratch'},arduino:{dizi:'arduino_projeleri',renk:'var(--arduino)',etiket:'Arduino'},algoritma:{dizi:'algoritma_konulari',renk:'var(--algo)',etiket:'Algoritma'},vitrin:{dizi:'vitrin',renk:'#FFD700',etiket:'Vitrin'}};
-function listeYenile(tip){
-  const {dizi,renk,etiket}=TIP[tip];
-  document.getElementById('list-'+tip).innerHTML=D[dizi].length?D[dizi].map((item,i)=>satir(item,tip,false,i)).join(''):`<div class="empty">Henüz ${etiket.toLowerCase()} eklenmedi.</div>`;
-}
-function satir(item,tip,readonly=false,idx=0){
-  const {renk,etiket}=TIP[tip];
-  const isim=item.baslik||`${item.isim} — ${item.proje}`;
-  const alt=item.kisa_aciklama||item.aciklama||'';
-  return `<div class="item-row">
-    <span class="item-badge" style="background:${renk}22;color:${renk}">${tip==='vitrin'?`★ ${item.puan}`:etiket}</span>
-    <div style="flex:1;min-width:0"><div class="item-title">${esc(isim)}</div>${alt?`<span class="item-sub">${esc(alt)}</span>`:''}</div>
-    ${!readonly?`<div class="item-actions"><button class="btn-icon" onclick="modalAc('${tip}',${idx})">Düzenle</button><button class="btn-icon del" onclick="sil('${tip}',${idx})">Sil</button></div>`:''}
-  </div>`;
+/* ══ BÖLÜM LİSTESİ ══ */
+function listeYenile(bolum){
+  const liste=(D.bolumler||{})[bolum]||[];
+  document.getElementById('list-'+bolum).innerHTML=liste.length
+    ?liste.map((item,i)=>`<div class="item-row">
+      <span class="item-badge" style="background:var(--green-bg);color:var(--green-d)">${item.emoji||'📌'}</span>
+      <div style="flex:1"><div class="item-title">${esc(item.baslik)}</div><span class="item-sub">${esc(item.kisa_aciklama)}</span></div>
+      <div class="item-actions">
+        <button class="btn-icon" onclick="modalAc('${bolum}',${i})">Düzenle</button>
+        <button class="btn-icon del" onclick="sil('${bolum}',${i})">Sil</button>
+      </div></div>`).join('')
+    :`<div class="empty">Henüz içerik eklenmedi.</div>`;
 }
 
 /* ══ MODAL ══ */
-let _modalTip='',_modalIdx=-1;
+let _tip='',_idx=-1;
 function modalAc(tip,idx=-1){
-  _modalTip=tip;_modalIdx=idx;
-  const item=idx===-1?null:D[TIP[tip].dizi][idx];
-  document.getElementById('modal-baslik').textContent=idx===-1?`Yeni ${TIP[tip].etiket}`:'Düzenle';
-  document.getElementById('modal-form').innerHTML=formHTML(tip,item);
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function formHTML(tip,item){
-  if(tip==='vitrin') return `<div class="form-grid">
-    <div class="form-field"><label>SIRA</label><input type="number" id="f-sira" value="${item?.sira||''}"></div>
-    <div class="form-field"><label>PUAN</label><input type="number" id="f-puan" value="${item?.puan||''}"></div>
-    <div class="form-field"><label>ÖĞRENCİ ADI</label><input type="text" id="f-isim" value="${esc(item?.isim||'')}"></div>
-    <div class="form-field"><label>PROJE ADI</label><input type="text" id="f-proje" value="${esc(item?.proje||'')}"></div>
-    <div class="form-field form-full"><label>AÇIKLAMA</label><input type="text" id="f-aciklama" value="${esc(item?.aciklama||'')}"></div>
-  </div><div class="form-actions"><button class="btn-save" onclick="kaydet()">Kaydet</button><button class="btn-cancel" onclick="modalKapat(null,true)">İptal</button></div>`;
+  _tip=tip;_idx=idx;
+  const item=idx===-1?null:(D.bolumler[tip]||[])[idx];
+  document.getElementById('modal-baslik').textContent=idx===-1?'Yeni İçerik':'Düzenle';
   const adimlar=item?.adimlar||[];
-  const linkAlani=tip==='scratch'?`<div class="form-field"><label>SCRATCH LİNKİ</label><input type="url" id="f-scratch_link" value="${esc(item?.scratch_link||'')}"></div>`:tip==='arduino'?`<div class="form-field"><label>WOKWİ LİNKİ</label><input type="url" id="f-wokwi_link" value="${esc(item?.wokwi_link||'')}"></div>`:'';
-  return `<div class="form-grid">
+  const linkler=tip==='scratch'
+    ?`<div class="form-field"><label>SCRATCH LİNKİ</label><input type="url" id="f-scratch_link" value="${esc(item?.scratch_link||'')}"></div>`
+    :tip==='tinkercad'
+    ?`<div class="form-field"><label>TİNKERCAD LİNKİ</label><input type="url" id="f-tinkercad_link" value="${esc(item?.tinkercad_link||'')}"></div>`
+    :tip==='arduino'
+    ?`<div class="form-field"><label>WOKWİ LİNKİ</label><input type="url" id="f-wokwi_link" value="${esc(item?.wokwi_link||'')}"></div>`
+    :'';
+  document.getElementById('modal-form').innerHTML=`<div class="form-grid">
+    <div class="form-field"><label>EMOJİ</label><input type="text" id="f-emoji" value="${esc(item?.emoji||'')}" placeholder="🐱" style="width:80px"></div>
     <div class="form-field form-full"><label>BAŞLIK</label><input type="text" id="f-baslik" value="${esc(item?.baslik||'')}"></div>
-    <div class="form-field form-full"><label>KISA AÇIKLAMA</label><input type="text" id="f-kisa_aciklama" value="${esc(item?.kisa_aciklama||'')}"></div>
-    <div class="form-field form-full"><label>KONU ANLATIMI</label><textarea id="f-konu_anlatimi">${esc(item?.konu_anlatimi||'')}</textarea></div>
+    <div class="form-field form-full"><label>KISA AÇIKLAMA</label><input type="text" id="f-kisa" value="${esc(item?.kisa_aciklama||'')}"></div>
+    <div class="form-field form-full"><label>KONU ANLATIMI</label><textarea id="f-anlatim">${esc(item?.konu_anlatimi||'')}</textarea></div>
     <div class="form-field form-full"><label>ADIMLAR</label>
       <div class="steps-list" id="steps-list">${adimlar.map((a,i)=>adimSatiri(a,i)).join('')}</div>
       <button class="btn-add-step" onclick="adimEkle()">+ Adım Ekle</button>
     </div>
-    ${linkAlani}
-    <div class="form-field"><label>PDF DOSYASI <span class="form-hint">(dosya adı)</span></label><input type="text" id="f-pdf_link" value="${esc(item?.pdf_link||'')}"></div>
-    <div class="form-field form-full"><label>VİDEO EMBED LİNKİ</label><input type="url" id="f-video_embed" value="${esc(item?.video_embed||'')}"></div>
+    ${linkler}
+    <div class="form-field"><label>PDF DOSYASI</label><input type="text" id="f-pdf" value="${esc(item?.pdf_link||'')}"></div>
+    <div class="form-field form-full"><label>VİDEO EMBED</label><input type="url" id="f-video" value="${esc(item?.video_embed||'')}"></div>
   </div>
   <div class="form-actions"><button class="btn-save" onclick="kaydet()">Kaydet</button><button class="btn-cancel" onclick="modalKapat(null,true)">İptal</button></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
 }
-function adimSatiri(deger='',idx=0){return `<div class="step-row" id="step-${idx}"><input type="text" value="${esc(deger)}" placeholder="Adım ${idx+1}"><button class="btn-remove-step" onclick="adimSil(${idx})">✕</button></div>`;}
-function adimEkle(){const l=document.getElementById('steps-list');const i=l.children.length;l.insertAdjacentHTML('beforeend',adimSatiri('',i));}
-function adimSil(idx){const el=document.getElementById('step-'+idx);if(el)el.remove();document.querySelectorAll('#steps-list .step-row').forEach((r,i)=>{r.id='step-'+i;r.querySelector('input').placeholder='Adım '+(i+1);r.querySelector('button').setAttribute('onclick',`adimSil(${i})`);});}
-function adimlarTopla(){return[...document.querySelectorAll('#steps-list .step-row input')].map(i=>i.value.trim()).filter(Boolean);}
+
+function adimSatiri(v='',i=0){return `<div class="step-row" id="step-${i}"><input type="text" value="${esc(v)}" placeholder="Adım ${i+1}"><button class="btn-remove-step" onclick="adimSil(${i})">✕</button></div>`}
+function adimEkle(){const l=document.getElementById('steps-list');const i=l.children.length;l.insertAdjacentHTML('beforeend',adimSatiri('',i))}
+function adimSil(i){const el=document.getElementById('step-'+i);if(el)el.remove();document.querySelectorAll('#steps-list .step-row').forEach((r,j)=>{r.id='step-'+j;r.querySelector('button').setAttribute('onclick',`adimSil(${j})`)})}
+function adimlarTopla(){return[...document.querySelectorAll('#steps-list .step-row input')].map(i=>i.value.trim()).filter(Boolean)}
+
 function kaydet(){
-  const tip=_modalTip,idx=_modalIdx,dizi=TIP[tip].dizi;
-  let item;
-  if(tip==='vitrin') item={sira:parseInt(g('f-sira'))||1,isim:g('f-isim'),proje:g('f-proje'),aciklama:g('f-aciklama'),puan:parseInt(g('f-puan'))||0};
-  else{item={id:(D[dizi][idx]?.id)||tip[0]+Date.now(),baslik:g('f-baslik'),kisa_aciklama:g('f-kisa_aciklama'),konu_anlatimi:g('f-konu_anlatimi'),adimlar:adimlarTopla(),pdf_link:g('f-pdf_link'),video_embed:g('f-video_embed')};
-    if(tip==='scratch') item.scratch_link=g('f-scratch_link');
-    if(tip==='arduino') item.wokwi_link=g('f-wokwi_link');}
-  if(idx===-1) D[dizi].push(item); else D[dizi][idx]=item;
-  veriKaydet(D);modalKapat(null,true);listeYenile(tip);ozetYenile();toast('Kaydedildi ✓');
+  if(!D.bolumler) D.bolumler={};
+  if(!D.bolumler[_tip]) D.bolumler[_tip]=[];
+  const item={
+    id:(_idx===-1?_tip[0]+Date.now():(D.bolumler[_tip][_idx]?.id||_tip[0]+Date.now())),
+    emoji:g('f-emoji'),baslik:g('f-baslik'),kisa_aciklama:g('f-kisa'),
+    konu_anlatimi:g('f-anlatim'),adimlar:adimlarTopla(),
+    pdf_link:g('f-pdf'),video_embed:g('f-video')
+  };
+  if(_tip==='scratch') item.scratch_link=g('f-scratch_link');
+  if(_tip==='tinkercad') item.tinkercad_link=g('f-tinkercad_link');
+  if(_tip==='arduino') item.wokwi_link=g('f-wokwi_link');
+  if(_idx===-1) D.bolumler[_tip].push(item); else D.bolumler[_tip][_idx]=item;
+  veriKaydet(D);modalKapat(null,true);listeYenile(_tip);ozetYenile();toast('Kaydedildi ✓');
 }
-function sil(tip,idx){if(!confirm('Bu içeriği silmek istediğine emin misin?'))return;D[TIP[tip].dizi].splice(idx,1);veriKaydet(D);listeYenile(tip);ozetYenile();toast('Silindi.');}
-function modalKapat(e,force){if(force||(e&&e.target===document.getElementById('modal-overlay')))document.getElementById('modal-overlay').classList.remove('open');}
+
+function sil(bolum,idx){
+  if(!confirm('Bu içeriği silmek istediğine emin misin?'))return;
+  D.bolumler[bolum].splice(idx,1);veriKaydet(D);listeYenile(bolum);ozetYenile();toast('Silindi.');
+}
+function modalKapat(e,force){if(force||(e&&e.target===document.getElementById('modal-overlay')))document.getElementById('modal-overlay').classList.remove('open')}
+
+/* ══ MENÜ YÖNETİMİ ══ */
+function menuYonetimYenile(){
+  const menuler=(D.menuler||[]).sort((a,b)=>a.sira-b.sira);
+  document.getElementById('menu-manager').innerHTML=menuler.map((m,i)=>`
+    <div class="menu-row" id="mrow-${i}">
+      <span class="drag-handle">⠿</span>
+      <div class="menu-row-info">
+        <div class="menu-row-name">${esc(m.baslik)}</div>
+        <div class="menu-row-id">${m.id}</div>
+      </div>
+      <button class="toggle-btn ${m.aktif!==false?'on':'off'}" onclick="menuToggle(${i})">${m.aktif!==false?'Aktif':'Pasif'}</button>
+      <button class="menu-edit-btn" onclick="menuDuzenle(${i})">Düzenle</button>
+    </div>`).join('');
+}
+
+function menuToggle(i){
+  const m=(D.menuler||[]).sort((a,b)=>a.sira-b.sira)[i];
+  if(m) m.aktif=!m.aktif;
+  menuYonetimYenile();toast('Değiştirildi — kaydetmeyi unutma!');
+}
+
+function menuDuzenle(i){
+  const m=(D.menuler||[]).sort((a,b)=>a.sira-b.sira)[i];
+  if(!m)return;
+  const yeniIsim=prompt('Menü ismini gir:', m.baslik);
+  if(yeniIsim&&yeniIsim.trim()){m.baslik=yeniIsim.trim();menuYonetimYenile();toast('İsim güncellendi — kaydetmeyi unutma!');}
+}
+
+function yeniMenuModal(){
+  const id=prompt('Menü ID (küçük harf, boşluksuz, örn: "python"):');
+  if(!id||!id.trim())return;
+  const temizId=id.trim().toLowerCase().replace(/\s+/g,'_');
+  const baslik=prompt('Menü başlığı:');
+  if(!baslik||!baslik.trim())return;
+  if(!D.menuler) D.menuler=[];
+  if(!D.bolumler) D.bolumler={};
+  const maxSira=Math.max(0,...D.menuler.map(m=>m.sira||0));
+  D.menuler.push({id:temizId,baslik:baslik.trim(),aktif:true,sira:maxSira+1});
+  D.bolumler[temizId]=[];
+  menuYonetimYenile();
+  toast(`"${baslik}" menüsü eklendi!`);
+}
+
+function menuKaydet(){veriKaydet(D);toast('Menü değişiklikleri kaydedildi ✓')}
 
 /* ══ SİTE BİLGİLERİ ══ */
-function siteBilgileriniYukle(){const s=D.site,h=D.hakkimda;sv('site-baslik',s.baslik);sv('site-slogan',s.slogan);sv('site-aciklama',s.hero_aciklama);sv('hk-isim',h.isim);sv('hk-unvan',h.unvan);sv('hk-bio1',h.biyografi_1);sv('hk-bio2',h.biyografi_2);sv('hk-eposta',h.eposta);sv('hk-sinif',h.sinif);sv('hk-mesai',h.mesai);sv('hk-dersler',(h.dersler||[]).join(', '));}
-function siteBilgileriniKaydet(){D.site.baslik=g('site-baslik');D.site.slogan=g('site-slogan');D.site.hero_aciklama=g('site-aciklama');D.hakkimda.isim=g('hk-isim');D.hakkimda.unvan=g('hk-unvan');D.hakkimda.biyografi_1=g('hk-bio1');D.hakkimda.biyografi_2=g('hk-bio2');D.hakkimda.eposta=g('hk-eposta');D.hakkimda.sinif=g('hk-sinif');D.hakkimda.mesai=g('hk-mesai');D.hakkimda.dersler=g('hk-dersler').split(',').map(s=>s.trim()).filter(Boolean);veriKaydet(D);toast('Site bilgileri kaydedildi ✓');}
+function siteBilgYukle(){
+  const s=D.site||{},h=D.hakkimda||{};
+  sv('s-baslik',s.baslik);sv('s-slogan',s.slogan);
+  sv('h-isim',h.isim);sv('h-unvan',h.unvan);sv('h-bio1',h.biyografi_1);sv('h-bio2',h.biyografi_2);
+  sv('h-eposta',h.eposta);sv('h-sinif',h.sinif);sv('h-mesai',h.mesai);
+  sv('h-dersler',(h.dersler||[]).join(', '));
+}
+function siteBilgKaydet(){
+  if(!D.site)D.site={};if(!D.hakkimda)D.hakkimda={};
+  D.site.baslik=g('s-baslik');D.site.slogan=g('s-slogan');
+  D.hakkimda.isim=g('h-isim');D.hakkimda.unvan=g('h-unvan');D.hakkimda.biyografi_1=g('h-bio1');D.hakkimda.biyografi_2=g('h-bio2');
+  D.hakkimda.eposta=g('h-eposta');D.hakkimda.sinif=g('h-sinif');D.hakkimda.mesai=g('h-mesai');
+  D.hakkimda.dersler=g('h-dersler').split(',').map(s=>s.trim()).filter(Boolean);
+  veriKaydet(D);toast('Site bilgileri kaydedildi ✓');
+}
 
 /* ══ DIŞA AKTARMA ══ */
-function onizlemeGuncelle(){document.getElementById('export-preview').textContent='const ICERIK = '+JSON.stringify(D,null,2).slice(0,400)+'...';}
-function disaAktar(){const blob=new Blob(['const ICERIK = '+JSON.stringify(D,null,2)+';'],{type:'text/javascript'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='icerikler.js';a.click();toast('icerikler.js indirildi ✓');}
+function onizlemeGuncelle(){document.getElementById('export-preview').textContent='const ICERIK = '+JSON.stringify(D,null,2).slice(0,500)+'...';}
+function disaAktar(){
+  const blob=new Blob(['/* MiniYazılımcı — Admin panelinden oluşturuldu */\nconst ICERIK = '+JSON.stringify(D,null,2)+';'],{type:'text/javascript'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='icerikler.js';a.click();
+  toast('icerikler.js indirildi ✓');
+}
 
 /* ══ YARDIMCI ══ */
-function g(id){const el=document.getElementById(id);return el?(el.value||'').trim():'';}
-function sv(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
-function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
-let _toastTimer;
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>el.classList.remove('show'),2500);}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')modalKapat(null,true);});
+function g(id){const el=document.getElementById(id);return el?(el.value||'').trim():''}
+function sv(id,val){const el=document.getElementById(id);if(el)el.value=val||''}
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+let _tt;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2500)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modalKapat(null,true)});
 </script>
 </body>
 </html>

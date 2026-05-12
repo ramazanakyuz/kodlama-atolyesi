@@ -3,181 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kodlama Atölyesi</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<title>MiniYazılımcı</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#1a2535;--surface:#243044;--surface2:#2d3d55;
-  --scratch:#FFAB19;--arduino:#00979D;--algo:#a78bfa;--gold:#FFD700;--green:#73CC80;
-  --text:#e8edf5;--muted:#7a8aaa;--border:rgba(255,255,255,0.07);
+:root {
+  --green-50:#EAF3DE; --green-100:#C0DD97; --green-400:#639922; --green-600:#3B6D11; --green-800:#27500A;
+  --purple-50:#EEEDFE; --purple-100:#CECBF6; --purple-400:#7F77DD; --purple-600:#534AB7; --purple-800:#3C3489;
+  --amber-50:#FAEEDA; --amber-100:#FAC775; --amber-400:#BA7517; --amber-600:#854F0B;
+  --blue-50:#E6F1FB; --blue-400:#378ADD; --blue-600:#185FA5;
+  --text:#1a2a0a; --muted:#5a7040; --border:rgba(99,153,34,0.15);
+  --radius-md:10px; --radius-lg:16px; --radius-xl:24px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-  background-size:48px 48px;
-}
+body{font-family:'Nunito',sans-serif;background:#f5f9f0;color:var(--text);min-height:100vh;overflow-x:hidden}
 
 /* HEADER */
 header{
-  position:sticky;top:0;z-index:100;
-  background:rgba(26,37,53,.96);backdrop-filter:blur(12px);
+  background:rgba(245,249,240,0.95);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--border);
-  padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:64px;
+  padding:0 5%;display:flex;align-items:center;justify-content:space-between;
+  height:64px;position:sticky;top:0;z-index:100;
 }
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:10px}
-.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--scratch);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-nav{display:flex;gap:4px;flex-wrap:wrap}
-nav a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500;padding:8px 14px;border-radius:8px;transition:all .2s;cursor:pointer}
-nav a:hover{color:var(--text);background:rgba(255,255,255,.06)}
+.logo{font-size:1.2rem;font-weight:900;display:flex;align-items:center;gap:10px;color:var(--green-600)}
+.logo-icon{width:36px;height:36px;border-radius:10px;background:var(--green-400);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.header-badge{
+  background:var(--green-50);border:1px solid var(--green-100);
+  color:var(--green-600);font-size:.75rem;font-weight:700;
+  padding:5px 12px;border-radius:20px;
+}
+#header-age-badge{display:none}
 
-/* HERO */
-.hero{position:relative;z-index:1;padding:80px 5% 60px;max-width:820px}
-.hero-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(115,204,128,.12);border:1px solid rgba(115,204,128,.25);
-  color:var(--green);font-size:.78rem;font-weight:500;
-  padding:5px 12px;border-radius:20px;margin-bottom:1.5rem;letter-spacing:.5px;
+/* YAŞ SEÇİM EKRANI */
+#age-screen{
+  min-height:calc(100vh - 64px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 5%;
+  background:linear-gradient(160deg,var(--green-50) 0%,#f5f9f0 50%,var(--purple-50) 100%);
 }
-.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease-in-out infinite}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:1rem}
-.hero p{font-size:1.05rem;color:var(--muted);line-height:1.7;max-width:560px}
+.age-title{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:900;color:var(--green-600);text-align:center;margin-bottom:8px;letter-spacing:-0.5px}
+.age-subtitle{font-size:1rem;color:var(--muted);text-align:center;margin-bottom:48px}
+.age-cards{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;max-width:700px}
+.age-card{
+  flex:1;min-width:260px;max-width:320px;
+  border-radius:var(--radius-xl);padding:32px 28px;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+  border:2px solid transparent;position:relative;overflow:hidden;
+}
+.age-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.1)}
+.age-card.young{background:var(--blue-50);border-color:#B5D4F4}
+.age-card.older{background:var(--green-50);border-color:var(--green-100)}
+.age-card-emoji{font-size:3rem;margin-bottom:16px;display:block}
+.age-card h2{font-size:1.5rem;font-weight:900;margin-bottom:6px}
+.age-card.young h2{color:var(--blue-600)}
+.age-card.older h2{color:var(--green-600)}
+.age-card p{font-size:.9rem;line-height:1.6;margin-bottom:20px}
+.age-card.young p{color:#185FA5}
+.age-card.older p{color:var(--muted)}
+.age-card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.age-tag{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.age-card.young .age-tag{background:#B5D4F4;color:#0C447C}
+.age-card.older .age-tag{background:var(--green-100);color:var(--green-800)}
+.age-btn{
+  width:100%;padding:12px;border-radius:var(--radius-md);border:none;
+  font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;
+  cursor:pointer;transition:.2s;
+}
+.age-card.young .age-btn{background:var(--blue-400);color:#fff}
+.age-card.older .age-btn{background:var(--green-400);color:#fff}
+.age-btn:hover{opacity:.88;transform:scale(1.02)}
 
-/* TABS */
-.tabs-wrap{position:relative;z-index:1;padding:0 5% 60px}
-.tab-nav{
-  display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);
-  border-radius:14px;padding:5px;width:fit-content;margin-bottom:2rem;flex-wrap:wrap;
+/* ANA PLATFORM */
+#platform{display:none}
+.platform-hero{
+  background:linear-gradient(135deg,var(--green-50) 0%,var(--purple-50) 100%);
+  padding:48px 5% 40px;border-bottom:1px solid var(--border);
 }
-.tab-btn{
-  background:none;border:none;color:var(--muted);
-  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;
-  padding:9px 18px;border-radius:10px;cursor:pointer;transition:all .2s;
+.platform-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:var(--green-600);margin-bottom:6px;letter-spacing:-0.3px}
+.platform-hero p{font-size:1rem;color:var(--muted)}
+.change-age{
+  margin-top:12px;background:none;border:1px solid var(--green-100);
+  border-radius:20px;padding:5px 14px;font-family:'Nunito',sans-serif;
+  font-size:.78rem;font-weight:700;color:var(--muted);cursor:pointer;transition:.2s;
+}
+.change-age:hover{background:var(--green-50);color:var(--green-600)}
+
+/* MENÜ */
+.menu-wrap{padding:0 5%;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:64px;z-index:90}
+.menu-tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 0;scrollbar-width:none}
+.menu-tabs::-webkit-scrollbar{display:none}
+.menu-tab{
   display:flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:var(--radius-md);
+  font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;
+  cursor:pointer;border:none;background:none;color:#888;
+  white-space:nowrap;transition:.2s;flex-shrink:0;
 }
-.tab-btn:hover{color:var(--text)}
-.tab-btn.active{background:var(--surface2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.tab-btn .dot{width:7px;height:7px;border-radius:50%}
-.tab-panel{display:none;animation:fadeUp .3s ease}
-.tab-panel.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.menu-tab:hover{background:#f5f9f0;color:var(--green-600)}
+.menu-tab.active{color:#fff}
+.menu-tab .tab-icon{font-size:1rem}
 
-/* CARDS */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.card{
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:24px;transition:transform .2s,border-color .2s;cursor:pointer;
+/* İÇERİK */
+.content-wrap{padding:32px 5% 60px;max-width:1100px}
+.section-panel{display:none}
+.section-panel.active{display:block}
+
+/* KARTLAR — 8-10 YAŞ */
+.grid-young{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.card-young{
+  border-radius:var(--radius-xl);padding:28px 22px;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+  border:2px solid transparent;text-align:center;
 }
-.card:hover{transform:translateY(-4px)}
-.card-label{font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.card h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:8px;line-height:1.3}
-.card p{font-size:.88rem;color:var(--muted);line-height:1.6}
-.card-arrow{margin-top:14px;font-size:.82rem;font-weight:600;opacity:.6}
+.card-young:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.card-young-emoji{font-size:2.8rem;margin-bottom:14px;display:block}
+.card-young h3{font-size:1.1rem;font-weight:800;margin-bottom:8px}
+.card-young p{font-size:.85rem;line-height:1.5;margin-bottom:16px}
+.card-young-btn{
+  display:inline-block;padding:8px 20px;border-radius:20px;
+  font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:800;
+  border:none;cursor:pointer;transition:.2s;
+}
+.card-young-btn:hover{opacity:.85;transform:scale(1.04)}
+
+/* KARTLAR — 11-13 YAŞ */
+.grid-older{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card-older{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:22px;cursor:pointer;transition:transform .15s,border-color .15s;
+}
+.card-older:hover{transform:translateY(-3px)}
+.card-label{font-size:.72rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.card-older h3{font-size:1rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.card-older p{font-size:.85rem;color:var(--muted);line-height:1.6}
+.card-arrow{margin-top:12px;font-size:.82rem;font-weight:700;opacity:.5}
 
 /* MODAL */
-.modal-overlay{
-  display:none;position:fixed;inset:0;z-index:200;
-  background:rgba(10,15,25,.88);backdrop-filter:blur(6px);
-  align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;
-}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,5,.75);z-index:200;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex}
-.modal{
-  background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:20px;
-  width:100%;max-width:720px;padding:36px;position:relative;margin:auto;
-  animation:fadeUp .3s ease;
-}
-.modal-close{
-  position:absolute;top:16px;right:16px;background:rgba(255,255,255,.08);
-  border:none;color:var(--muted);width:32px;height:32px;border-radius:8px;
-  font-size:1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;
-}
-.modal-close:hover{background:rgba(255,255,255,.18);color:var(--text)}
-.modal-tag{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.modal h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:6px;line-height:1.2}
-.modal-kisa{font-size:.9rem;color:var(--muted)}
-.modal-section{margin-top:24px}
-.modal-section-title{font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.modal p.anlatim{font-size:.95rem;color:var(--muted);line-height:1.8}
+.modal{background:#fff;border-radius:var(--radius-xl);width:100%;max-width:680px;padding:36px;position:relative;margin:auto;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:16px;right:16px;background:#f5f9f0;border:none;width:32px;height:32px;border-radius:8px;font-size:1.1rem;cursor:pointer;color:var(--muted);transition:.2s;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--green-50);color:var(--green-600)}
+.modal-tag{font-size:.72rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.modal h2{font-size:1.5rem;font-weight:900;margin-bottom:6px;line-height:1.2;color:var(--text)}
+.modal-kisa{font-size:.9rem;color:var(--muted);margin-bottom:0}
+.modal-section{margin-top:22px}
+.modal-section-title{font-size:.72rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.modal p.anlatim{font-size:.95rem;color:#444;line-height:1.8}
 .adim-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-.adim-list li{
-  display:flex;gap:12px;align-items:flex-start;
-  background:var(--surface2);border-radius:10px;padding:10px 14px;font-size:.88rem;line-height:1.5;
-}
-.adim-no{font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;min-width:22px;margin-top:1px}
-.modal-video{margin-top:16px;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#000}
+.adim-list li{display:flex;gap:12px;align-items:flex-start;background:#f5f9f0;border-radius:10px;padding:10px 14px;font-size:.88rem;line-height:1.5}
+.adim-no{font-weight:900;font-size:.85rem;min-width:22px;margin-top:1px}
+.modal-video{margin-top:14px;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:16/9;background:#000}
 .modal-video iframe{width:100%;height:100%;border:none}
-.modal-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.modal-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;
-  padding:9px 18px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s;
-}
-.modal-btn:hover{opacity:.82}
-
-/* VİTRİN */
-.star-row{
-  background:var(--surface);border:1px solid rgba(255,215,0,.15);border-radius:12px;
-  padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:16px;transition:border-color .2s;
-}
-.star-row:hover{border-color:rgba(255,215,0,.35)}
-.rank{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;width:36px;text-align:center;flex-shrink:0}
-.star-info h4{font-size:.95rem;font-weight:600}
-.star-info p{font-size:.82rem;color:var(--muted);margin-top:2px}
-.star-score{margin-left:auto;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;flex-shrink:0}
-
-/* HAKKIMDA */
-.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start}
-.about-card{background:var(--surface);border:1px solid rgba(115,204,128,.22);border-radius:16px;padding:24px}
-.tag-pill{display:inline-block;font-size:.78rem;font-weight:600;padding:4px 12px;border-radius:20px;margin:3px}
-.info-row{font-size:.85rem;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:8px}
-
-.s-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.2rem}
-.s-header h2{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700}
-.s-header span{font-size:.78rem;color:var(--muted)}
+.modal-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.modal-btn{display:inline-flex;align-items:center;gap:6px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;padding:10px 20px;border-radius:20px;border:none;cursor:pointer;text-decoration:none;transition:opacity .2s}
+.modal-btn:hover{opacity:.85}
 
 /* HATA */
-.hata-kutu{
-  text-align:center;padding:60px 20px;
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;
-}
-.hata-kutu h2{font-family:'Syne',sans-serif;font-size:1.2rem;margin-bottom:10px}
-.hata-kutu p{font-size:.88rem;color:var(--muted);line-height:1.7}
-.hata-kutu code{background:var(--surface2);padding:2px 8px;border-radius:4px;font-size:.82rem}
+.hata{text-align:center;padding:60px 20px;background:#fff;border-radius:var(--radius-xl);border:1px solid var(--border)}
+.hata h2{font-size:1.2rem;font-weight:800;margin-bottom:10px;color:var(--green-600)}
+.hata p{font-size:.88rem;color:var(--muted);line-height:1.7}
+.hata code{background:#f5f9f0;padding:2px 8px;border-radius:4px;font-size:.82rem}
 
-footer{
-  position:relative;z-index:1;border-top:1px solid var(--border);
-  padding:28px 5%;display:flex;justify-content:space-between;
-  flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--muted);
-}
+footer{border-top:1px solid var(--border);padding:24px 5%;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--muted);background:#fff}
 
 @media(max-width:600px){
-  nav a{font-size:.8rem;padding:6px 10px}
-  .modal{padding:22px 16px}
+  .age-cards{flex-direction:column}
+  .age-card{min-width:0;max-width:100%}
+  .modal{padding:24px 18px}
+  .content-wrap{padding:20px 4% 40px}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo"><span class="logo-dot"></span><span id="site-baslik">Kodlama Atölyesi</span></div>
-  <nav id="main-nav"></nav>
+  <div class="logo">
+    <div class="logo-icon">🌱</div>
+    MiniYazılımcı
+  </div>
+  <div class="header-badge" id="header-age-badge"></div>
 </header>
 
-<section class="hero">
-  <div class="hero-tag" id="hero-tag">Yükleniyor...</div>
-  <h1 id="hero-h1"></h1>
-  <p id="hero-p"></p>
-</section>
-
-<div class="tabs-wrap">
-  <div class="tab-nav" id="tab-nav"></div>
-  <div id="tab-panels"></div>
+<!-- YAŞ SEÇİM -->
+<div id="age-screen">
+  <div class="age-title">Merhaba! 👋<br>Sen kaç yaşındasın?</div>
+  <div class="age-subtitle">Sana en uygun içerikleri gösterelim</div>
+  <div class="age-cards">
+    <div class="age-card young" onclick="yasSeç('young')">
+      <span class="age-card-emoji">🚀</span>
+      <h2>8–10 Yaş</h2>
+      <p>Kodlamanın eğlenceli dünyasına ilk adımını at!</p>
+      <div class="age-card-tags">
+        <span class="age-tag">Scratch</span>
+        <span class="age-tag">Blok Kod</span>
+        <span class="age-tag">Oyunlar</span>
+        <span class="age-tag">Animasyon</span>
+      </div>
+      <button class="age-btn">Başlayalım! 🎮</button>
+    </div>
+    <div class="age-card older" onclick="yasSeç('older')">
+      <span class="age-card-emoji">⚡</span>
+      <h2>11–13 Yaş</h2>
+      <p>Gerçek projeler yap, devreler kur, yapay zeka keşfet!</p>
+      <div class="age-card-tags">
+        <span class="age-tag">Arduino</span>
+        <span class="age-tag">Tinkercad</span>
+        <span class="age-tag">Algoritma</span>
+        <span class="age-tag">Yapay Zeka</span>
+      </div>
+      <button class="age-btn">Hadi Başla! ⚡</button>
+    </div>
+  </div>
 </div>
 
-<footer><span id="footer-text"></span></footer>
+<!-- PLATFORM -->
+<div id="platform">
+  <div class="platform-hero">
+    <h1 id="platform-title">Merhaba!</h1>
+    <p id="platform-subtitle">Bugün ne öğrenmek istiyorsun?</p>
+    <button class="change-age" onclick="yasEkraninaGeri()">↩ Yaş grubunu değiştir</button>
+  </div>
+  <div class="menu-wrap">
+    <div class="menu-tabs" id="menu-tabs"></div>
+  </div>
+  <div class="content-wrap">
+    <div id="section-panels"></div>
+  </div>
+</div>
+
+<footer>
+  <span id="footer-text">© 2026 MiniYazılımcı</span>
+  <span style="color:var(--green-400);font-weight:700">🌱 Birlikte öğreniyoruz!</span>
+</footer>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="kapatModal(event)">
@@ -187,244 +246,187 @@ footer{
   </div>
 </div>
 
-<!--
-  ════════════════════════════════════════════════════
-  icerikler.js — admin panelinden indirilen dosya
-  Bu satırın altına, indirdiğin icerikler.js dosyasını
-  aynı klasöre koy. Site otomatik okur.
-  ════════════════════════════════════════════════════
--->
 <script src="icerikler.js"></script>
-
 <script>
-/* ── RENK PALETİ ── */
-const R={
-  scratch:  {ana:'#FFAB19',dim:'rgba(255,171,25,.2)',hov:'rgba(255,171,25,.5)',btn:'#FFAB19',btnT:'#1a1000',label:'🐱 Scratch Projesi'},
-  arduino:  {ana:'#00979D',dim:'rgba(0,151,157,.2)',  hov:'rgba(0,151,157,.5)',  btn:'#00979D',btnT:'#fff',   label:'♾ Arduino Projesi'},
-  algoritma:{ana:'#a78bfa',dim:'rgba(167,139,250,.2)',hov:'rgba(167,139,250,.5)',btn:'#a78bfa',btnT:'#1a1040',label:'🧩 Algoritma Konusu'},
+let _yas = localStorage.getItem('miniyazilimci_yas') || null;
+
+/* ── RENK & TEMA ── */
+const TEMA = {
+  young: {
+    hero_title: 'Hadi oynayalım! 🎮',
+    hero_sub: 'Bugün hangi projeyi yapacaksın?',
+    badge: '8–10 Yaş 🚀',
+    badge_bg: '#B5D4F4', badge_color: '#0C447C',
+  },
+  older: {
+    hero_title: 'Bugün ne inşa ediyoruz? ⚡',
+    hero_sub: 'Projelerini seç, öğren, yap!',
+    badge: '11–13 Yaş ⚡',
+    badge_bg: '#C0DD97', badge_color: '#27500A',
+  }
 };
-const EMOJI={
-  scratch:  ['🐱','🐱','🐱','🐱','🐱','🐱'],
-  arduino:  ['💡','🚦','📡','📄','⚙️','🔧'],
-  algoritma:['🔢','🔁','🔀','📊','🔍','🧩'],
+
+const BOLUM_RENK = {
+  scratch:   {bg:'#E6F1FB',border:'#B5D4F4',btn:'#378ADD',btnT:'#fff',label:'#185FA5',dot:'#378ADD'},
+  tinkercad: {bg:'#FAEEDA',border:'#FAC775',btn:'#BA7517',btnT:'#fff',label:'#854F0B',dot:'#EF9F27'},
+  arduino:   {bg:'#EAF3DE',border:'#C0DD97',btn:'#639922',btnT:'#fff',label:'#3B6D11',dot:'#639922'},
+  algoritma: {bg:'#EEEDFE',border:'#CECBF6',btn:'#7F77DD',btnT:'#fff',label:'#534AB7',dot:'#7F77DD'},
+  yapay_zeka:{bg:'#FBEAF0',border:'#F4C0D1',btn:'#D4537E',btnT:'#fff',label:'#993556',dot:'#D4537E'},
+};
+
+const BOLUM_EMOJI = {
+  scratch:'🐱', tinkercad:'🔧', arduino:'⚡', algoritma:'🧩', yapay_zeka:'🤖'
 };
 
 function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
 
-/* ── BAŞLAT ── */
-window.addEventListener('load', ()=>{
-  if(typeof ICERIK === 'undefined'){
-    hataGoster();
-    return;
-  }
-  render(ICERIK);
+/* ── YAŞ SEÇİMİ ── */
+window.addEventListener('load', () => {
+  if(typeof ICERIK === 'undefined'){ hataGoster(); return; }
+  if(_yas) platformGoster(_yas);
 });
 
-function hataGoster(){
-  document.getElementById('hero-tag').textContent = '⚠ İçerik bulunamadı';
-  document.getElementById('hero-h1').textContent = '';
-  document.getElementById('hero-p').textContent = '';
-  document.getElementById('tab-panels').innerHTML=`
-    <div class="hata-kutu">
-      <h2>icerikler.js dosyası bulunamadı</h2>
-      <p>
-        Yönetici panelinden (<code>admin.html</code>) giriş yap ve<br>
-        <strong>Dışa Aktar</strong> bölümünden <code>icerikler.js</code> dosyasını indir.<br>
-        İndirilen dosyayı bu HTML ile <strong>aynı klasöre</strong> koy ve sayfayı yenile.
-      </p>
-    </div>`;
+function yasSeç(yas) {
+  _yas = yas;
+  localStorage.setItem('miniyazilimci_yas', yas);
+  platformGoster(yas);
 }
 
-/* ── RENDER ── */
-function render(d){
-  // Header & Hero
-  document.title = d.site.baslik;
-  document.getElementById('site-baslik').textContent = d.site.baslik;
-  document.getElementById('hero-tag').textContent = d.site.slogan;
-  document.getElementById('hero-h1').innerHTML =
-    `${esc(d.site.hero_h1_1)}<br>`+
-    `<span style="color:var(--scratch)">${esc(d.site.hero_h1_2)}</span><br>`+
-    `<span style="color:var(--arduino)">${esc(d.site.hero_h1_3)}</span>`;
-  document.getElementById('hero-p').textContent = d.site.hero_aciklama;
-  document.getElementById('footer-text').textContent = d.site.footer;
+function platformGoster(yas) {
+  if(typeof ICERIK === 'undefined'){ hataGoster(); return; }
+  document.getElementById('age-screen').style.display = 'none';
+  document.getElementById('platform').style.display = 'block';
+  const t = TEMA[yas];
+  document.getElementById('platform-title').textContent = t.hero_title;
+  document.getElementById('platform-subtitle').textContent = t.hero_sub;
+  const badge = document.getElementById('header-age-badge');
+  badge.textContent = t.badge;
+  badge.style.display = 'block';
+  badge.style.background = t.badge_bg;
+  badge.style.color = t.badge_color;
+  badge.style.border = `1px solid ${t.badge_bg}`;
+  menuOlustur(yas);
+  document.addEventListener('keydown', e => { if(e.key==='Escape') kapatModal(null,true); });
+}
 
-  const tabs=[
-    {id:'scratch',   label:'Scratch',       dot:'#FFAB19', panel:()=>panelProjeler('scratch',   d.scratch_projeleri,   'Scratch Dünyası','Blok tabanlı kodlama')},
-    {id:'arduino',   label:'Arduino',       dot:'#00979D', panel:()=>panelProjeler('arduino',   d.arduino_projeleri,   'Arduino Atölyesi','Wokwi simülasyonu ile')},
-    {id:'algoritma', label:'Algoritma',     dot:'#a78bfa', panel:()=>panelProjeler('algoritma', d.algoritma_konulari, 'Algoritma','Temel kavramlar')},
-    {id:'vitrin',    label:'Gurur Tablosu', dot:'#FFD700', panel:()=>panelVitrin(d.vitrin)},
-    {id:'hakkimda',  label:'Hakkımda',      dot:'#73CC80', panel:()=>panelHakkimda(d.hakkimda)},
-  ];
+function yasEkraninaGeri() {
+  document.getElementById('platform').style.display = 'none';
+  document.getElementById('age-screen').style.display = 'flex';
+  document.getElementById('header-age-badge').style.display = 'none';
+  localStorage.removeItem('miniyazilimci_yas');
+  _yas = null;
+}
 
-  const nav=document.getElementById('main-nav');
-  const tabNav=document.getElementById('tab-nav');
-  const tabPanels=document.getElementById('tab-panels');
+/* ── MENÜ ── */
+function menuOlustur(yas) {
+  const menular = ICERIK.menuler || [];
+  const tabs = document.getElementById('menu-tabs');
+  const panels = document.getElementById('section-panels');
+  tabs.innerHTML = ''; panels.innerHTML = '';
 
-  tabs.forEach((t,i)=>{
-    // Nav linki
-    const a=document.createElement('a');
-    a.textContent=t.label; a.onclick=()=>gec(t.id); nav.appendChild(a);
-    // Tab butonu
-    const btn=document.createElement('button');
-    btn.className='tab-btn'+(i===0?' active':'');
-    btn.dataset.tab=t.id; btn.onclick=()=>gec(t.id);
-    btn.innerHTML=`<span class="dot" style="background:${t.dot}"></span>${t.label}`;
-    tabNav.appendChild(btn);
-    // Panel
-    const p=t.panel();
-    if(i===0) p.classList.add('active');
-    tabPanels.appendChild(p);
+  menular.filter(m => m.aktif !== false).forEach((m, i) => {
+    const r = BOLUM_RENK[m.id] || BOLUM_RENK.scratch;
+    const btn = document.createElement('button');
+    btn.className = 'menu-tab' + (i===0?' active':'');
+    btn.dataset.id = m.id;
+    btn.style.cssText = i===0 ? `background:${r.btn};color:#fff` : '';
+    btn.innerHTML = `<span class="tab-icon">${BOLUM_EMOJI[m.id]||'📌'}</span>${esc(m.baslik)}`;
+    btn.onclick = () => tabGec(m.id);
+    tabs.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.className = 'section-panel' + (i===0?' active':'');
+    panel.id = 'panel-' + m.id;
+    panel.appendChild(bolumIcerik(m.id, yas));
+    panels.appendChild(panel);
   });
-
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape') kapatModal(null,true); });
 }
 
-/* ── PANEL: PROJELER ── */
-function panelProjeler(tip, liste, baslik, alt){
-  const panel=document.createElement('div');
-  panel.className='tab-panel'; panel.id='panel-'+tip;
-  panel.innerHTML=`<div class="s-header"><h2>${baslik}</h2><span>${alt}</span></div>`;
+function tabGec(id) {
+  const r = BOLUM_RENK[id] || BOLUM_RENK.scratch;
+  document.querySelectorAll('.menu-tab').forEach(b => {
+    const isActive = b.dataset.id === id;
+    b.classList.toggle('active', isActive);
+    b.style.background = isActive ? r.btn : '';
+    b.style.color = isActive ? '#fff' : '';
+  });
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.toggle('active', p.id==='panel-'+id));
+}
 
-  if(!liste || liste.length===0){
-    panel.innerHTML+=`<div style="color:var(--muted);font-size:.88rem;padding:20px 0">Henüz içerik eklenmedi.</div>`;
-    return panel;
+/* ── BÖLÜM İÇERİK ── */
+function bolumIcerik(id, yas) {
+  const r = BOLUM_RENK[id] || BOLUM_RENK.scratch;
+  const liste = ICERIK['bolumler']?.[id] || [];
+  const div = document.createElement('div');
+
+  if(!liste.length) {
+    div.innerHTML = `<div style="color:var(--muted);padding:40px 0;text-align:center;font-size:.9rem">Henüz içerik eklenmedi.</div>`;
+    return div;
   }
 
-  const r=R[tip]||R.scratch;
-  const grid=document.createElement('div'); grid.className='grid';
-
-  liste.forEach((item,i)=>{
-    const emoji=(EMOJI[tip]||[])[i]||'📌';
-    const kart=document.createElement('div'); kart.className='card';
-    kart.style.borderColor=r.dim;
-    kart.addEventListener('mouseenter',()=>kart.style.borderColor=r.hov);
-    kart.addEventListener('mouseleave',()=>kart.style.borderColor=r.dim);
-    kart.innerHTML=`
-      <div class="card-label" style="color:${r.ana}">${emoji} ${esc(item.baslik)}</div>
-      <h3>${esc(item.baslik)}</h3>
-      <p>${esc(item.kisa_aciklama)}</p>
-      <div class="card-arrow" style="color:${r.ana}">Detayları gör →</div>`;
-    kart.onclick=()=>acModal(tip,item);
-    grid.appendChild(kart);
-  });
-
-  panel.appendChild(grid);
-  return panel;
-}
-
-/* ── PANEL: VİTRİN ── */
-function panelVitrin(liste){
-  const panel=document.createElement('div');
-  panel.className='tab-panel'; panel.id='panel-vitrin';
-  panel.innerHTML=`<div class="s-header"><h2>Bu Haftanın Gurur Tablosu</h2><span>En iyi projeler</span></div>`;
-
-  if(!liste||liste.length===0){
-    panel.innerHTML+=`<div style="color:var(--muted);font-size:.88rem;padding:20px 0">Henüz kayıt eklenmedi.</div>`;
-    return panel;
+  if(yas === 'young') {
+    const grid = document.createElement('div'); grid.className = 'grid-young';
+    liste.forEach(item => {
+      const k = document.createElement('div');
+      k.className = 'card-young';
+      k.style.cssText = `background:${r.bg};border-color:${r.border}`;
+      k.innerHTML = `
+        <span class="card-young-emoji">${item.emoji||BOLUM_EMOJI[id]||'📌'}</span>
+        <h3 style="color:${r.label}">${esc(item.baslik)}</h3>
+        <p>${esc(item.kisa_aciklama)}</p>
+        <button class="card-young-btn" style="background:${r.btn};color:${r.btnT}">Hadi Başla! →</button>`;
+      k.onclick = () => acModal(id, item);
+      grid.appendChild(k);
+    });
+    div.appendChild(grid);
+  } else {
+    const grid = document.createElement('div'); grid.className = 'grid-older';
+    liste.forEach(item => {
+      const k = document.createElement('div');
+      k.className = 'card-older';
+      k.style.cssText = `border-left:3px solid ${r.btn}`;
+      k.addEventListener('mouseenter', () => k.style.borderColor = r.btn);
+      k.innerHTML = `
+        <div class="card-label" style="color:${r.label}">${BOLUM_EMOJI[id]||'📌'} ${esc(item.baslik)}</div>
+        <h3>${esc(item.baslik)}</h3>
+        <p>${esc(item.kisa_aciklama)}</p>
+        <div class="card-arrow" style="color:${r.btn}">Detayları gör →</div>`;
+      k.onclick = () => acModal(id, item);
+      grid.appendChild(k);
+    });
+    div.appendChild(grid);
   }
-
-  const rankRenk=['#FFD700','#c0c0c0','#cd7f32'];
-  const sirali=[...liste].sort((a,b)=>a.sira-b.sira);
-  sirali.forEach(k=>{
-    const renk=rankRenk[k.sira-1]||'var(--muted)';
-    const row=document.createElement('div'); row.className='star-row';
-    row.innerHTML=`
-      <div class="rank" style="color:${renk}">${k.sira}</div>
-      <div class="star-info">
-        <h4>${esc(k.isim)} — "${esc(k.proje)}"</h4>
-        <p>${esc(k.aciklama)}</p>
-      </div>
-      <div class="star-score" style="color:${renk}">★ ${k.puan}</div>`;
-    panel.appendChild(row);
-  });
-  return panel;
-}
-
-/* ── PANEL: HAKKIMDA ── */
-function panelHakkimda(h){
-  const panel=document.createElement('div');
-  panel.className='tab-panel'; panel.id='panel-hakkimda';
-
-  const renkMap={Scratch:'#FFAB19',Arduino:'#00979D',Algoritma:'#a78bfa',Robotik:'#73CC80'};
-  const dersler=(h.dersler||[]).map(d=>{
-    const c=renkMap[d]||'#73CC80';
-    return `<span class="tag-pill" style="background:${c}22;color:${c}">${esc(d)}</span>`;
-  }).join('');
-
-  panel.innerHTML=`
-    <div class="s-header"><h2>Hakkımda</h2></div>
-    <div class="about-grid">
-      <div class="about-card">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
-          <div style="width:56px;height:56px;border-radius:50%;background:rgba(115,204,128,.15);border:2px solid rgba(115,204,128,.3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0">👩‍💻</div>
-          <div>
-            <div style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700">${esc(h.isim)}</div>
-            <div style="font-size:.82rem;color:var(--muted);margin-top:2px">${esc(h.unvan)}</div>
-          </div>
-        </div>
-        <p style="font-size:.88rem;color:var(--muted);line-height:1.7">${esc(h.biyografi_1)}</p>
-        <p style="font-size:.88rem;color:var(--muted);line-height:1.7;margin-top:10px">${esc(h.biyografi_2)}</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div class="about-card">
-          <div style="font-size:.72rem;font-weight:700;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:10px">📚 Verdiğim Dersler</div>
-          <div>${dersler}</div>
-        </div>
-        <div class="about-card">
-          <div style="font-size:.72rem;font-weight:700;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:10px">📬 İletişim</div>
-          <div class="info-row"><span style="color:var(--green)">✉</span>${esc(h.eposta)}</div>
-          <div class="info-row"><span style="color:var(--green)">🏫</span>${esc(h.sinif)}</div>
-          <div class="info-row"><span style="color:var(--green)">🕐</span>${esc(h.mesai)}</div>
-        </div>
-      </div>
-    </div>`;
-  return panel;
+  return div;
 }
 
 /* ── MODAL ── */
-function acModal(tip,veri){
-  const r=R[tip]||R.scratch;
-
-  let adimHTML='';
-  if(veri.adimlar && veri.adimlar.length){
-    adimHTML=`
-      <div class="modal-section">
-        <div class="modal-section-title">Adım Adım</div>
-        <ul class="adim-list">
-          ${veri.adimlar.map((a,i)=>`
-            <li>
-              <span class="adim-no" style="color:${r.ana}">${i+1}.</span>
-              <span>${esc(a)}</span>
-            </li>`).join('')}
-        </ul>
-      </div>`;
-  }
-
-  let vidHTML='';
-  if(veri.video_embed){
-    vidHTML=`
-      <div class="modal-section">
-        <div class="modal-section-title">Video Anlatım</div>
-        <div class="modal-video">
-          <iframe src="${veri.video_embed}" allowfullscreen loading="lazy"></iframe>
-        </div>
-      </div>`;
-  }
-
-  const linkler=[];
-  if(veri.scratch_link) linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.scratch_link}" target="_blank">🐱 Scratch'te Aç ↗</a>`);
-  if(veri.wokwi_link)   linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.wokwi_link}" target="_blank">♾ Wokwi'de Aç ↗</a>`);
-  if(veri.pdf_link)     linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.pdf_link}" download>📄 PDF İndir</a>`);
-  const linkHTML=linkler.length?`
+function acModal(id, veri) {
+  const r = BOLUM_RENK[id] || BOLUM_RENK.scratch;
+  let adimHTML = '';
+  if(veri.adimlar?.length) adimHTML = `
     <div class="modal-section">
-      <div class="modal-section-title">Bağlantılar</div>
-      <div class="modal-links">${linkler.join('')}</div>
-    </div>`:''
+      <div class="modal-section-title">Adım Adım</div>
+      <ul class="adim-list">${veri.adimlar.map((a,i)=>`
+        <li><span class="adim-no" style="color:${r.btn}">${i+1}.</span><span>${esc(a)}</span></li>`).join('')}
+      </ul>
+    </div>`;
+  let vidHTML = '';
+  if(veri.video_embed) vidHTML = `
+    <div class="modal-section">
+      <div class="modal-section-title">Video Anlatım</div>
+      <div class="modal-video"><iframe src="${veri.video_embed}" allowfullscreen loading="lazy"></iframe></div>
+    </div>`;
+  const linkler = [];
+  if(veri.scratch_link)   linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.scratch_link}" target="_blank">🐱 Scratch'te Aç ↗</a>`);
+  if(veri.tinkercad_link) linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.tinkercad_link}" target="_blank">🔧 Tinkercad'de Aç ↗</a>`);
+  if(veri.wokwi_link)     linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.wokwi_link}" target="_blank">⚡ Wokwi'de Aç ↗</a>`);
+  if(veri.pdf_link)       linkler.push(`<a class="modal-btn" style="background:${r.btn};color:${r.btnT}" href="${veri.pdf_link}" download>📄 PDF İndir</a>`);
+  const linkHTML = linkler.length ? `<div class="modal-section"><div class="modal-section-title">Bağlantılar</div><div class="modal-links">${linkler.join('')}</div></div>` : '';
 
-  document.getElementById('modal-content').innerHTML=`
-    <div class="modal-tag" style="color:${r.ana}">${r.label}</div>
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-tag" style="color:${r.label}">${BOLUM_EMOJI[id]||'📌'} ${ICERIK.menuler?.find(m=>m.id===id)?.baslik||id}</div>
     <h2>${esc(veri.baslik)}</h2>
-    <p class="modal-kisa" style="margin-top:4px">${esc(veri.kisa_aciklama)}</p>
+    <p class="modal-kisa" style="margin-top:4px;color:var(--muted)">${esc(veri.kisa_aciklama)}</p>
     <div class="modal-section">
       <div class="modal-section-title">Konu Anlatımı</div>
       <p class="anlatim">${esc(veri.konu_anlatimi)}</p>
@@ -432,19 +434,26 @@ function acModal(tip,veri){
     ${adimHTML}${vidHTML}${linkHTML}`;
 
   document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
 
-function kapatModal(e,force){
-  if(force||(e&&e.target===document.getElementById('modal-overlay'))){
+function kapatModal(e, force) {
+  if(force||(e&&e.target===document.getElementById('modal-overlay'))) {
     document.getElementById('modal-overlay').classList.remove('open');
-    document.body.style.overflow='';
+    document.body.style.overflow = '';
   }
 }
 
-function gec(name){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+name));
+function hataGoster() {
+  document.getElementById('age-screen').style.display = 'none';
+  document.getElementById('platform').style.display = 'block';
+  document.getElementById('section-panels').innerHTML = `
+    <div class="hata">
+      <h2>icerikler.js bulunamadı</h2>
+      <p>Admin panelinden (<code>admin.html</code>) giriş yap,<br>
+      <strong>Dışa Aktar</strong> bölümünden <code>icerikler.js</code> dosyasını indir<br>
+      ve bu dosyayla aynı klasöre koy.</p>
+    </div>`;
 }
 </script>
 </body>
