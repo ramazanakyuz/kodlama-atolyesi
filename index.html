@@ -216,21 +216,34 @@ body{
 .kart-btn svg{width:16px;height:16px}
 
 /* ══ FEATURES ══ */
-.features{
-  background:#fff;border-top:1px solid rgba(0,0,0,.06);
-  padding:30px 40px;
-}
-.features-inner{
+.features{padding:0 40px 56px}
+.features-container{
   max-width:1100px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  background:#fff;border-radius:28px;
+  box-shadow:0 4px 32px rgba(0,0,0,0.07);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  overflow:hidden;
 }
-.feat{display:flex;align-items:flex-start;gap:12px}
+.feat{
+  display:flex;align-items:center;gap:18px;
+  padding:34px 28px;position:relative;
+  transition:transform .2s,background .2s;cursor:default;
+}
+.feat:hover{transform:translateY(-2px);background:#fafbff}
+.feat:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:18%;
+  height:64%;width:1px;background:rgba(0,0,0,0.07);
+}
 .feat-ico{
-  width:44px;height:44px;border-radius:13px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:1.15rem;
+  width:60px;height:60px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
 }
-.feat-title{font-size:.88rem;font-weight:900;color:#1a1f6e;margin-bottom:4px}
-.feat-desc{font-size:.76rem;color:#6b7280;line-height:1.55;font-weight:600}
+.feat-ico svg{width:26px;height:26px}
+.feat-title{
+  font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:900;
+  color:#0B1F78;margin-bottom:5px;line-height:1.2;
+}
+.feat-desc{font-size:.8rem;font-weight:600;color:#9ca3af;line-height:1.55}
 
 /* ══ FOOTER ══ */
 footer{
@@ -395,23 +408,79 @@ footer{
 
 <!-- ══ FEATURES ══ -->
 <section class="features" id="features">
-  <div class="features-inner">
+  <div class="features-container">
+
+    <!-- 1. Eğlenerek Öğren — mor -->
     <div class="feat">
-      <div class="feat-ico" style="background:#ede9fe">🎮</div>
-      <div><div class="feat-title">Eğlenerek Öğren</div><div class="feat-desc">Oyunlar ve projelerle öğrenmek çok keyifli!</div></div>
+      <div class="feat-ico" style="background:#f0edff">
+        <svg viewBox="0 0 26 26" fill="none">
+          <rect x="2" y="8" width="22" height="14" rx="5" fill="#7B61FF" opacity=".15"/>
+          <rect x="2" y="8" width="22" height="14" rx="5" stroke="#7B61FF" stroke-width="1.8"/>
+          <circle cx="8" cy="15" r="2.5" fill="#7B61FF"/>
+          <line x1="16" y1="12" x2="16" y2="18" stroke="#7B61FF" stroke-width="2" stroke-linecap="round"/>
+          <line x1="13" y1="15" x2="19" y2="15" stroke="#7B61FF" stroke-width="2" stroke-linecap="round"/>
+          <rect x="9" y="4" width="8" height="5" rx="2" fill="#7B61FF" opacity=".3"/>
+          <line x1="13" y1="4" x2="13" y2="8" stroke="#7B61FF" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="feat-text">
+        <div class="feat-title">Eğlenerek Öğren</div>
+        <div class="feat-desc">Oyunlar ve projelerle öğrenmek çok keyifli!</div>
+      </div>
     </div>
+
+    <!-- 2. Rozetler Kazan — yeşil -->
     <div class="feat">
-      <div class="feat-ico" style="background:#dcfce7">🏅</div>
-      <div><div class="feat-title">Rozetler Kazan</div><div class="feat-desc">Başarılarını rozetlerle taçlandır!</div></div>
+      <div class="feat-ico" style="background:#edf7e6">
+        <svg viewBox="0 0 26 26" fill="none">
+          <circle cx="13" cy="10" r="7" fill="#74C043" opacity=".15"/>
+          <circle cx="13" cy="10" r="7" stroke="#74C043" stroke-width="1.8"/>
+          <path d="M10 10l2 2 4-4" stroke="#74C043" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 16l-2 5h12l-2-5" fill="#74C043" opacity=".25"/>
+          <path d="M9 16l-2 5h12l-2-5" stroke="#74C043" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="feat-text">
+        <div class="feat-title">Rozetler Kazan</div>
+        <div class="feat-desc">Başarılarını rozetlerle taçlandır!</div>
+      </div>
     </div>
+
+    <!-- 3. Topluluğa Katıl — mavi -->
     <div class="feat">
-      <div class="feat-ico" style="background:#dbeafe">👥</div>
-      <div><div class="feat-title">Topluluğa Katıl</div><div class="feat-desc">Arkadaşlarınla birlikte üret ve paylaş!</div></div>
+      <div class="feat-ico" style="background:#e8f2ff">
+        <svg viewBox="0 0 26 26" fill="none">
+          <circle cx="9" cy="10" r="4" fill="#4C8DFF" opacity=".2"/>
+          <circle cx="9" cy="10" r="4" stroke="#4C8DFF" stroke-width="1.8"/>
+          <circle cx="18" cy="10" r="4" fill="#4C8DFF" opacity=".2"/>
+          <circle cx="18" cy="10" r="4" stroke="#4C8DFF" stroke-width="1.8"/>
+          <path d="M2 22c0-3.3 3.1-5 7-5" stroke="#4C8DFF" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M24 22c0-3.3-3.1-5-7-5" stroke="#4C8DFF" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M9 17c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="#4C8DFF" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="feat-text">
+        <div class="feat-title">Topluluğa Katıl</div>
+        <div class="feat-desc">Arkadaşlarınla birlikte üret ve paylaş!</div>
+      </div>
     </div>
+
+    <!-- 4. Gelişimini Takip Et — turuncu -->
     <div class="feat">
-      <div class="feat-ico" style="background:#fff3e6">🚀</div>
-      <div><div class="feat-title">Gelişimini Takip Et</div><div class="feat-desc">İlerlemeyi gör, hedeflerine ulaş!</div></div>
+      <div class="feat-ico" style="background:#fff2e6">
+        <svg viewBox="0 0 26 26" fill="none">
+          <path d="M13 2L15.5 8.5L22 9.5L17.5 14L18.5 21L13 17.5L7.5 21L8.5 14L4 9.5L10.5 8.5L13 2Z"
+            fill="#FF8A1F" opacity=".2" stroke="#FF8A1F" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M13 5L14.8 9.8L20 10.5L16.5 13.9L17.4 19.2L13 16.7L8.6 19.2L9.5 13.9L6 10.5L11.2 9.8L13 5Z"
+            fill="#FF8A1F" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="feat-text">
+        <div class="feat-title">Gelişimini Takip Et</div>
+        <div class="feat-desc">İlerlemeyi gör, hedeflerine ulaş!</div>
+      </div>
     </div>
+
   </div>
 </section>
 
