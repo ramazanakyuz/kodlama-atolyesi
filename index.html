@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kodbino — Hayal Et, Kodla, Geliştir!</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(160deg,#eef2ff 0%,#f0f4ff 50%,#f5f0ff 100%);
+  min-height:100vh;overflow-x:hidden;
+  color:#1a1f6e;
+}
+
+/* ══ HEADER ══ */
+.header-outer{
+  padding:14px 24px;
+  display:flex;justify-content:center;
+  position:sticky;top:0;z-index:100;
+  background:rgba(238,242,255,0.8);
+  backdrop-filter:blur(16px);
+}
+.header-pill{
+  background:#fff;
+  border-radius:50px;
+  padding:8px 10px 8px 16px;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 4px 24px rgba(100,80,200,0.13);
+  width:100%;max-width:980px;
+}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;flex-shrink:0}
+.logo-robot{
+  width:44px;height:44px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-robot svg{width:44px;height:44px}
+.logo-wordmark{
+  font-family:'Nunito',sans-serif;
+  font-size:2rem;font-weight:900;
+  letter-spacing:-0.5px;line-height:1;
+  display:flex;align-items:center;gap:0;
+}
+/* kod → lacivert */
+.lk{color:#0B1F78}
+/* b i n o → her harf farklı renk */
+.lb{color:#4C8DFF}
+.li{color:#74C043}
+.ln{color:#F6C431}
+.lo{color:#FF8A1F}
+
+/* Nav */
+.nav{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.nav a{
+  font-size:.88rem;font-weight:700;color:#1a1a2e;
+  text-decoration:none;padding:8px 15px;border-radius:30px;transition:.15s;
+  white-space:nowrap;
+}
+.nav a:hover{color:#7B61FF;background:rgba(123,97,255,0.07)}
+.nav-active{
+  background:#7B61FF!important;color:#fff!important;
+  border-radius:30px;padding:9px 18px;
+  font-size:.88rem;font-weight:900;text-decoration:none;
+  display:flex;align-items:center;gap:7px;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(123,97,255,0.4),inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Giriş Yap */
+.btn-giris{
+  background:#7B61FF;color:#fff;border:none;border-radius:30px;
+  padding:9px 18px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;
+  cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;
+  box-shadow:0 3px 14px rgba(123,97,255,0.3);transition:.15s;
+  text-decoration:none;flex-shrink:0;margin-left:4px;
+}
+.btn-giris:hover{background:#6d28d9;transform:translateY(-1px)}
+.btn-giris svg{width:16px;height:16px;flex-shrink:0}
+
+/* ══ HERO ══ */
+.hero{
+  max-width:1100px;margin:0 auto;
+  padding:56px 40px 44px;
+  display:grid;grid-template-columns:1fr 480px;
+  align-items:center;gap:24px;
+}
+.hero-h1{
+  font-size:clamp(3rem,5vw,4.4rem);
+  font-weight:900;line-height:1.06;
+  letter-spacing:-1.5px;margin-bottom:6px;
+}
+.h-dark{color:#1a1f6e;display:block}
+.h-purple{color:#7B61FF;display:block;position:relative}
+.h-underline{
+  display:block;height:6px;width:170px;
+  background:linear-gradient(90deg,#f59e0b,#f97316);
+  border-radius:4px;margin-top:5px;
+}
+.h-green{color:#22c55e;display:block}
+
+.hero-sub{
+  font-size:1.02rem;font-weight:600;color:#6b7280;
+  line-height:1.65;margin:20px 0 30px;max-width:420px;
+}
+.hero-btns{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.btn-kesfet{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#7B61FF;color:#fff;
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;
+  padding:14px 28px;border-radius:16px;border:none;cursor:pointer;
+  text-decoration:none;box-shadow:0 4px 18px rgba(123,97,255,.38);transition:.2s;
+}
+.btn-kesfet:hover{background:#6d28d9;transform:translateY(-2px);box-shadow:0 6px 24px rgba(123,97,255,.48)}
+.btn-kesfet-ico{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+}
+.btn-video{
+  display:inline-flex;align-items:center;gap:12px;
+  background:none;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;color:#1a1f6e;
+  text-decoration:none;
+}
+.btn-video-ico{
+  width:44px;height:44px;border-radius:50%;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 14px rgba(0,0,0,.1);transition:.2s;flex-shrink:0;
+}
+.btn-video-ico svg{width:14px;height:14px;margin-left:3px}
+.btn-video:hover .btn-video-ico{box-shadow:0 4px 18px rgba(0,0,0,.15);transform:scale(1.06)}
+
+/* ══ ROBOT VISUAL ══ */
+.hero-right{display:flex;justify-content:center;align-items:center;position:relative}
+.robot-scene{
+  position:relative;width:520px;height:480px;
+  display:flex;align-items:center;justify-content:center;
+}
+.robot-blob{
+  position:absolute;width:420px;height:400px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%,rgba(123,97,255,.13) 0%,rgba(100,150,255,.08) 45%,transparent 70%);
+}
+/* Ek dekoratif blob orijinal tasarımdaki gibi */
+.robot-blob::after{
+  content:'';position:absolute;
+  width:340px;height:320px;border-radius:50%;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse,rgba(200,180,255,.15) 0%,transparent 65%);
+}
+.robot-main{
+  position:relative;z-index:2;
+  animation:float 3.8s ease-in-out infinite;
+}
+.robot-main img{
+  width:400px;height:400px;object-fit:contain;
+  filter:drop-shadow(0 20px 40px rgba(123,97,255,.15));
+}
+.robot-emoji-fb{
+  width:290px;height:290px;display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:10px;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* Dekoratif chip'ler */
+.deco{
+  position:absolute;background:#fff;border-radius:18px;
+  box-shadow:0 4px 18px rgba(0,0,0,.09);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;font-weight:800;
+  animation:float 3.8s ease-in-out infinite;
+  z-index:3;padding:12px 14px;
+}
+.d1{top:24px;left:10px;animation-delay:.5s;background:rgba(123,97,255,.12);color:#7B61FF;font-size:1rem}
+.d2{top:40px;right:4px;animation-delay:1.1s;background:rgba(34,197,94,.12);font-size:1rem;color:#22c55e}
+.d3{bottom:64px;right:8px;animation-delay:1.7s;background:rgba(79,159,255,.12);color:#4F9FFF;font-size:.95rem}
+.d4{bottom:84px;left:4px;animation-delay:.8s;background:rgba(245,158,11,.12);color:#f59e0b;font-size:1rem}
+
+/* ══ DISCOVER ══ */
+.discover{max-width:1100px;margin:0 auto;padding:0 40px 60px}
+.disc-title{
+  text-align:center;font-size:1.35rem;font-weight:900;color:#1a1f6e;
+  margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.disc-line{width:56px;height:2.5px;background:linear-gradient(90deg,transparent,#7B61FF);border-radius:2px}
+.disc-line-r{background:linear-gradient(90deg,#7B61FF,transparent)}
+.disc-dot{width:8px;height:8px;border-radius:50%;background:#7B61FF;flex-shrink:0}
+
+/* Kartlar */
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.kart{
+  background:#fff;border-radius:22px;
+  padding:24px 16px 20px;text-align:center;
+  border:1.5px solid rgba(0,0,0,.05);
+  box-shadow:0 2px 16px rgba(100,80,200,.07);
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;
+}
+.kart:hover{transform:translateY(-7px);box-shadow:0 14px 36px rgba(100,80,200,.13)}
+
+.kart-icon{
+  width:80px;height:80px;border-radius:20px;
+  margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+}
+.kart-name{font-size:1rem;font-weight:900;margin-bottom:7px}
+.kart-desc{font-size:.76rem;color:#6b7280;line-height:1.5;margin-bottom:18px;font-weight:600;flex:1}
+.kart-btn{
+  width:40px;height:40px;border-radius:50%;border:none;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1rem;font-weight:900;cursor:pointer;
+  transition:.2s;flex-shrink:0;
+}
+.kart-btn:hover{transform:scale(1.12);filter:brightness(1.08)}
+.kart-btn svg{width:16px;height:16px}
+
+/* ══ FEATURES ══ */
+.features{
+  background:#fff;border-top:1px solid rgba(0,0,0,.06);
+  padding:30px 40px;
+}
+.features-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+}
+.feat{display:flex;align-items:flex-start;gap:12px}
+.feat-ico{
+  width:44px;height:44px;border-radius:13px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.15rem;
+}
+.feat-title{font-size:.88rem;font-weight:900;color:#1a1f6e;margin-bottom:4px}
+.feat-desc{font-size:.76rem;color:#6b7280;line-height:1.55;font-weight:600}
+
+/* ══ FOOTER ══ */
+footer{
+  background:#fff;border-top:1px solid rgba(0,0,0,.06);
+  padding:20px 40px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:12px;
+  font-size:.8rem;font-weight:700;color:#9ca3af;
+}
+.footer-logo{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;display:flex;align-items:center;gap:2px}
+
+/* ══ MODAL ══ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,31,110,.6);z-index:200;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(5px)}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:26px;width:100%;max-width:660px;padding:38px;position:relative;margin:auto;animation:fadeUp .25s ease;box-shadow:0 24px 64px rgba(26,31,110,.2)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:16px;right:16px;background:#f3f4f6;border:none;width:32px;height:32px;border-radius:8px;font-size:1rem;cursor:pointer;color:#6b7280;display:flex;align-items:center;justify-content:center;transition:.15s}
+.modal-close:hover{background:#ede9fe;color:#7B61FF}
+.modal-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
+.modal h2{font-size:1.45rem;font-weight:900;letter-spacing:-.3px;margin-bottom:5px;color:#1a1f6e}
+.modal-sub{font-size:.9rem;font-weight:600;color:#6b7280}
+.modal-sec{margin-top:20px}
+.modal-sec-lbl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#9ca3af;margin-bottom:9px}
+.modal p.body{font-size:.92rem;font-weight:600;color:#374151;line-height:1.8}
+.step-list{display:flex;flex-direction:column;gap:7px}
+.step-item{display:flex;gap:11px;align-items:flex-start;background:#f9fafb;border-radius:10px;padding:10px 13px;font-size:.86rem;font-weight:600;line-height:1.5}
+.step-num{font-weight:900;font-size:.82rem;min-width:20px;margin-top:1px}
+.modal-video{margin-top:12px;border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:#000}
+.modal-video iframe{width:100%;height:100%;border:none}
+.modal-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.modal-lbtn{display:inline-flex;align-items:center;gap:5px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:800;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;color:#fff;transition:.15s}
+.modal-lbtn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;padding:40px 24px;text-align:center}
+  .hero-right{display:none}
+  .h-underline{margin:5px auto}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .hero-btns{justify-content:center}
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .features-inner{grid-template-columns:repeat(2,1fr)}
+  .discover,.features{padding-left:24px;padding-right:24px}
+}
+@media(max-width:600px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .features-inner{grid-template-columns:1fr}
+  .nav,.btn-giris{display:none}
+  footer{padding:18px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div class="header-outer">
+  <div class="header-pill">
+
+    <!-- Logo -->
+    <a class="logo" href="#">
+      <!-- Robot maskot: beyaz gövde, koyu ekran, mavi dijital göz, yeşil yaprak anten -->
+      <div class="logo-robot">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <!-- Yeşil yaprak anten -->
+          <ellipse cx="22" cy="4" rx="4.5" ry="6" fill="#74C043" transform="rotate(-8 22 4)"/>
+          <ellipse cx="25" cy="3" rx="3" ry="4.5" fill="#5aaa2e" transform="rotate(-8 25 3)" opacity=".7"/>
+          <rect x="21" y="7" width="2" height="5" rx="1" fill="#d1d5db"/>
+          <!-- Baş — beyaz/krem, yuvarlak köşeli dikdörtgen -->
+          <rect x="7" y="11" width="30" height="22" rx="9" fill="#f8f8f8"/>
+          <rect x="7" y="11" width="30" height="22" rx="9" stroke="#e8e8e8" stroke-width="1"/>
+          <!-- Koyu ekran yüzey -->
+          <rect x="10" y="14" width="24" height="16" rx="6" fill="#1a1f3c"/>
+          <!-- Mavi dijital göz (tek büyük göz gibi iki dikdörtgen) -->
+          <rect x="13" y="17" width="7" height="6" rx="2.5" fill="#4C8DFF"/>
+          <rect x="24" y="17" width="7" height="6" rx="2.5" fill="#4C8DFF"/>
+          <!-- Göz parlaması -->
+          <circle cx="15" cy="18.5" r="1.5" fill="#fff" opacity=".85"/>
+          <circle cx="26" cy="18.5" r="1.5" fill="#fff" opacity=".85"/>
+          <!-- Gülümseme -->
+          <path d="M16 26 Q22 30 28 26" stroke="#4C8DFF" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".8"/>
+          <!-- Turuncu kulaklıklar -->
+          <rect x="2" y="16" width="6" height="9" rx="3" fill="#FF8A1F"/>
+          <rect x="36" y="16" width="6" height="9" rx="3" fill="#FF8A1F"/>
+        </svg>
+      </div>
+      <!-- "kod" lacivert, "b"=mavi "i"=yeşil "n"=sarı "o"=turuncu -->
+      <div class="logo-wordmark">
+        <span class="lk">kod</span><span class="lb">b</span><span class="li">i</span><span class="ln">n</span><span class="lo">o</span>
+      </div>
+    </a>
+
+    <!-- Nav -->
+    <nav class="nav">
+      <a class="nav-active" href="#">🏠 Ana Sayfa</a>
+      <a href="#discover">Projeler</a>
+      <a href="#discover">Dersler</a>
+      <a href="#discover">Araçlar</a>
+      <a href="#about">Hakkımızda</a>
+    </nav>
+
+    <!-- Giriş Yap -->
+    <a class="btn-giris" href="#">
+      <svg viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="7" r="3.5" stroke="#fff" stroke-width="1.8"/>
+        <path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Giriş Yap
+    </a>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div>
+    <h1 class="hero-h1">
+      <span class="h-dark">Hayal Et,</span>
+      <span class="h-purple">Kodla,<span class="h-underline"></span></span>
+      <span class="h-green">Geliştir!</span>
+    </h1>
+    <p class="hero-sub">8–15 yaş arası çocuklar için eğlenceli<br>kodlama ve teknoloji platformu.</p>
+    <div class="hero-btns">
+      <a class="btn-kesfet" href="#discover">
+        <span class="btn-kesfet-ico">🚀</span>Hemen Keşfet
+      </a>
+      <a class="btn-video" href="#">
+        <span class="btn-video-ico">
+          <svg viewBox="0 0 14 14" fill="none">
+            <polygon points="3,1 13,7 3,13" fill="#1a1f6e"/>
+          </svg>
+        </span>
+        Tanıtım Videosu
+      </a>
+    </div>
+  </div>
+
+  <!-- Robot -->
+  <div class="hero-right">
+    <div class="robot-scene">
+      <div class="robot-blob"></div>
+      <div class="robot-main">
+        <img class="robot-img" src="robot.png" alt="Kodbino Robot">
+      </div>
+      <!-- Deco chips -->
+      <div class="deco d1">{ }</div>
+      <div class="deco d2">&lt;/&gt;</div>
+      <div class="deco d3">💡</div>
+      <div class="deco d4">⭐</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DISCOVER ══ -->
+<section class="discover" id="discover">
+  <div class="disc-title">
+    <span class="disc-line"></span>
+    <span class="disc-dot"></span>
+    Neyi Keşfetmek İstersin?
+    <span class="disc-dot"></span>
+    <span class="disc-line disc-line-r"></span>
+  </div>
+  <div class="cards" id="cards-grid"></div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="feat">
+      <div class="feat-ico" style="background:#ede9fe">🎮</div>
+      <div><div class="feat-title">Eğlenerek Öğren</div><div class="feat-desc">Oyunlar ve projelerle öğrenmek çok keyifli!</div></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico" style="background:#dcfce7">🏅</div>
+      <div><div class="feat-title">Rozetler Kazan</div><div class="feat-desc">Başarılarını rozetlerle taçlandır!</div></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico" style="background:#dbeafe">👥</div>
+      <div><div class="feat-title">Topluluğa Katıl</div><div class="feat-desc">Arkadaşlarınla birlikte üret ve paylaş!</div></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico" style="background:#fff3e6">🚀</div>
+      <div><div class="feat-title">Gelişimini Takip Et</div><div class="feat-desc">İlerlemeyi gör, hedeflerine ulaş!</div></div>
+    </div>
+  </div>
+</section>
+
+<footer id="about">
+  <div class="footer-logo">
+    <span class="lk">kod</span><span class="lb">b</span><span class="li">i</span><span class="ln">n</span><span class="lo">o</span> 🌱
+  </div>
+  <span id="footer-text">© 2026 Kodbino · Birlikte öğreniyoruz!</span>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="km(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="km(null,true)">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="icerikler.js"></script>
+<script>
+const CC={
+  scratch:{
+    r:'#f97316',bg:'#fff8f0',isim:'Scratch',
+    desc:'Kendi oyunlarını ve animasyonlarını yap!',
+    svg:`<svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+      <circle cx="29" cy="33" r="19" fill="#f97316"/>
+      <circle cx="29" cy="31" r="17" fill="#ffa94d"/>
+      <polygon points="15,19 11,9 21,16" fill="#f97316"/>
+      <polygon points="43,19 47,9 37,16" fill="#f97316"/>
+      <polygon points="15,19 13,12 20,17" fill="#ffd6a5"/>
+      <polygon points="43,19 45,12 38,17" fill="#ffd6a5"/>
+      <ellipse cx="23" cy="28" rx="4" ry="4.5" fill="#fff"/>
+      <ellipse cx="35" cy="28" rx="4" ry="4.5" fill="#fff"/>
+      <circle cx="24" cy="29" r="2.2" fill="#1a1f6e"/>
+      <circle cx="36" cy="29" r="2.2" fill="#1a1f6e"/>
+      <circle cx="24.8" cy="27.8" r=".9" fill="#fff"/>
+      <circle cx="36.8" cy="27.8" r=".9" fill="#fff"/>
+      <ellipse cx="29" cy="35" rx="2.8" ry="1.8" fill="#e05a00"/>
+      <path d="M24 38 Q29 43 34 38" stroke="#e05a00" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <line x1="9" y1="33" x2="23" y2="34.5" stroke="#c0440a" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="9" y1="37" x2="23" y2="36" stroke="#c0440a" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="49" y1="33" x2="35" y2="34.5" stroke="#c0440a" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="49" y1="37" x2="35" y2="36" stroke="#c0440a" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>`
+  },
+  arduino:{
+    r:'#0ea5a0',bg:'#e0f5f4',isim:'Arduino',
+    desc:'Elektronik projeler geliştir!',
+    svg:`<svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+      <path d="M9 29C9 18 20 18 29 29C38 40 49 40 49 29C49 18 38 18 29 29C20 40 9 40 9 29Z"
+        fill="none" stroke="#0ea5a0" stroke-width="5.5" stroke-linecap="round"/>
+      <line x1="15" y1="24" x2="15" y2="34" stroke="#0ea5a0" stroke-width="3" stroke-linecap="round"/>
+      <line x1="10" y1="29" x2="20" y2="29" stroke="#0ea5a0" stroke-width="3" stroke-linecap="round"/>
+      <line x1="38" y1="29" x2="48" y2="29" stroke="#0ea5a0" stroke-width="3" stroke-linecap="round"/>
+    </svg>`
+  },
+  tinkercad:{
+    r:'#f59e0b',bg:'#fef9e6',isim:'Tinkercad',
+    desc:'3D tasarla ve simülasyon yap!',
+    svg:`<svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+      <rect x="5" y="28" width="20" height="20" rx="4" fill="#ef4444"/>
+      <polygon points="5,28 13,22 25,22 25,30 13,36 5,36" fill="#dc2626" opacity=".25"/>
+      <rect x="5" y="19" width="20" height="11" rx="3" fill="#fca5a5"/>
+      <rect x="19" y="22" width="20" height="20" rx="4" fill="#3b82f6"/>
+      <rect x="19" y="13" width="20" height="11" rx="3" fill="#93c5fd"/>
+      <rect x="33" y="28" width="20" height="20" rx="4" fill="#f59e0b"/>
+      <polygon points="33,28 41,22 53,22 53,30 41,36 33,36" fill="#d97706" opacity=".25"/>
+      <rect x="33" y="19" width="20" height="11" rx="3" fill="#fcd34d"/>
+    </svg>`
+  },
+  algoritma:{
+    r:'#f97316',bg:'#fff3f0',isim:'Algoritma',
+    desc:'Mantığını geliştir, problemleri çöz!',
+    svg:`<svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+      <rect x="19" y="3" width="20" height="10" rx="4" fill="#f97316"/>
+      <line x1="29" y1="13" x2="29" y2="19" stroke="#f97316" stroke-width="2.5"/>
+      <polygon points="29,19 42,29 29,39 16,29" fill="#fbbf24"/>
+      <polygon points="29,22 39,29 29,36 19,29" fill="#fde68a"/>
+      <line x1="16" y1="29" x2="7" y2="29" stroke="#f97316" stroke-width="2"/>
+      <rect x="2" y="24" width="9" height="10" rx="3" fill="#f97316" opacity=".7"/>
+      <line x1="42" y1="29" x2="51" y2="29" stroke="#f97316" stroke-width="2"/>
+      <rect x="47" y="24" width="9" height="10" rx="3" fill="#f97316" opacity=".7"/>
+      <line x1="29" y1="39" x2="29" y2="47" stroke="#f97316" stroke-width="2"/>
+      <ellipse cx="29" cy="52" rx="9" ry="4.5" fill="#f97316" opacity=".45"/>
+    </svg>`
+  },
+  yapay_zeka:{
+    r:'#8b5cf6',bg:'#f3f0ff',isim:'Yapay Zeka',
+    desc:'Geleceğin teknolojisini keşfet!',
+    svg:`<svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+      <ellipse cx="29" cy="27" rx="19" ry="16" fill="#c4b5fd"/>
+      <path d="M17 19 Q11 23 12 31 Q13 37 19 39" stroke="#7c3aed" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M41 19 Q47 23 46 31 Q45 37 39 39" stroke="#7c3aed" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <line x1="29" y1="11" x2="29" y2="43" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3 2.5"/>
+      <path d="M18 22 Q22 19 26 22 Q30 25 34 22 Q38 19 41 22" stroke="#7c3aed" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M17 31 Q21 28 25 31 Q29 34 33 31 Q37 28 41 31" stroke="#7c3aed" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <rect x="25" y="41" width="8" height="9" rx="3" fill="#8b5cf6"/>
+      <rect x="20" y="48" width="18" height="5" rx="2.5" fill="#a78bfa"/>
+      <circle cx="21" cy="18" r="3" fill="#fff" opacity=".55"/>
+      <circle cx="23" cy="27" r="2.2" fill="#7c3aed" opacity=".5"/>
+      <circle cx="35" cy="27" r="2.2" fill="#7c3aed" opacity=".5"/>
+    </svg>`
+  }
+};
+
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+
+window.addEventListener('load',()=>{
+  // Önce admin panelinin localStorage verisine bak (en güncel veri)
+  // Yoksa icerikler.js'deki varsayılan veriyi kullan
+  try {
+    const lokal = localStorage.getItem('kodbino_icerik');
+    if(lokal) {
+      const parsed = JSON.parse(lokal);
+      // ICERIK global değişkenini localStorage verisiyle güncelle
+      if(typeof ICERIK !== 'undefined') {
+        Object.assign(ICERIK, parsed);
+      } else {
+        window.ICERIK = parsed;
+      }
+    }
+  } catch(e) { /* localStorage okunamazsa icerikler.js kullan */ }
+
+  if(typeof ICERIK==='undefined'){hataGoster();return;}
+  kartsGoster();
+  if(ICERIK.site?.footer) document.getElementById('footer-text').textContent=ICERIK.site.footer;
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')km(null,true)});
+});
+
+function ikonHTML(id, c){
+  // PNG varsa onu kullan, yoksa SVG fallback
+  const pngMap={scratch:'scratch.png',arduino:'arduino.png',tinkercad:'tinkercad.png',algoritma:'algoritma.png',yapay_zeka:'yapayzeka.png'};
+  const png=pngMap[id];
+  if(png) return `<img src="${png}" alt="${id}" width="64" height="64" style="object-fit:contain"
+    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">${c.svg?`<span style="display:none;align-items:center;justify-content:center">${c.svg}</span>`:''}`;
+  return c.svg||'<span style="font-size:2.5rem">📌</span>';
+}
+
+function kartsGoster(){
+  const menuler=(ICERIK.menuler||[]).filter(m=>m.aktif!==false).sort((a,b)=>a.sira-b.sira);
+  document.getElementById('cards-grid').innerHTML=menuler.map(m=>{
+    const c=CC[m.id]||{r:'#7B61FF',bg:'#ede9fe',isim:m.baslik,desc:'Keşfet!',svg:''};
+    return `<div class="kart"
+      onmouseenter="this.style.borderColor='${c.r}44'"
+      onmouseleave="this.style.borderColor='rgba(0,0,0,.05)'"
+      onclick="bolumListesiAc('${m.id}')">
+      <div class="kart-icon" style="background:${c.bg};display:flex;align-items:center;justify-content:center">
+        ${ikonHTML(m.id, c)}
+      </div>
+      <div class="kart-name" style="color:${c.r}">${esc(m.baslik)}</div>
+      <div class="kart-desc">${c.desc}</div>
+      <button class="kart-btn" style="background:${c.r}">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8H13M9 4L13 8L9 12" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function bolumListesiAc(id){
+  const liste=(ICERIK.bolumler||{})[id]||[];
+  const c=CC[id]||{r:'#7B61FF',isim:id};
+  const isim={scratch:'Scratch',arduino:'Arduino',tinkercad:'Tinkercad',algoritma:'Algoritma',yapay_zeka:'Yapay Zeka'}[id]||id;
+  if(!liste.length){
+    document.getElementById('modal-content').innerHTML=`
+      <div class="modal-eyebrow" style="color:${c.r}">${isim}</div>
+      <h2>Henüz içerik yok</h2>
+      <p class="modal-sub">Admin panelinden bu bölüme içerik ekleyebilirsin.</p>`;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow='hidden';
+    return;
+  }
+  // Tek içerik varsa direkt aç, çok içerik varsa liste göster
+  if(liste.length===1){acModal(id,liste[0]);return;}
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-eyebrow" style="color:${c.r}">${isim}</div>
+    <h2>${isim} Projeleri</h2>
+    <p class="modal-sub" style="margin-bottom:16px">${liste.length} içerik mevcut</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+      ${liste.map((item,i)=>`
+        <div onclick="acModal('${id}',ICERIK.bolumler['${id}'][${i}])" style="
+          background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;
+          padding:14px 16px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:12px"
+          onmouseenter="this.style.background='${c.r}0d';this.style.borderColor='${c.r}44'"
+          onmouseleave="this.style.background='#f9fafb';this.style.borderColor='#e5e7eb'">
+          <span style="font-size:1.4rem">${item.emoji||'📌'}</span>
+          <div style="flex:1">
+            <div style="font-weight:800;font-size:.92rem;color:#1a1f6e">${esc(item.baslik)}</div>
+            <div style="font-size:.78rem;color:#6b7280;margin-top:2px;font-weight:600">${esc(item.kisa_aciklama)}</div>
+          </div>
+          <span style="color:${c.r};font-weight:900;font-size:1.1rem">→</span>
+        </div>`).join('')}
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function bolumAc(id){bolumListesiAc(id)}
+
+function acModal(id,veri){
+  const c=CC[id]||{r:'#7B61FF',isim:id};
+  let adimHTML='';
+  if(veri.adimlar?.length) adimHTML=`<div class="modal-sec"><div class="modal-sec-lbl">Adım Adım</div>
+    <div class="step-list">${veri.adimlar.map((a,i)=>`
+      <div class="step-item"><span class="step-num" style="color:${c.r}">${i+1}.</span><span>${esc(a)}</span></div>`).join('')}
+    </div></div>`;
+  let vidHTML='';
+  if(veri.video_embed) vidHTML=`<div class="modal-sec"><div class="modal-sec-lbl">Video</div><div class="modal-video"><iframe src="${veri.video_embed}" allowfullscreen loading="lazy"></iframe></div></div>`;
+  const ll=[];
+  if(veri.scratch_link)   ll.push(`<a class="modal-lbtn" style="background:${c.r}" href="${veri.scratch_link}" target="_blank">🐱 Scratch'te Aç</a>`);
+  if(veri.tinkercad_link) ll.push(`<a class="modal-lbtn" style="background:${c.r}" href="${veri.tinkercad_link}" target="_blank">🔧 Tinkercad'de Aç</a>`);
+  if(veri.wokwi_link)     ll.push(`<a class="modal-lbtn" style="background:${c.r}" href="${veri.wokwi_link}" target="_blank">⚡ Wokwi'de Aç</a>`);
+  if(veri.pdf_link)       ll.push(`<a class="modal-lbtn" style="background:${c.r}" href="${veri.pdf_link}" download>📄 PDF İndir</a>`);
+  const lHTML=ll.length?`<div class="modal-sec"><div class="modal-sec-lbl">Bağlantılar</div><div class="modal-links">${ll.join('')}</div></div>`:'';
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-eyebrow" style="color:${c.r}">${c.isim}</div>
+    <h2>${esc(veri.baslik)}</h2><p class="modal-sub">${esc(veri.kisa_aciklama)}</p>
+    <div class="modal-sec"><div class="modal-sec-lbl">Konu Anlatımı</div><p class="body">${esc(veri.konu_anlatimi)}</p></div>
+    ${adimHTML}${vidHTML}${lHTML}`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function km(e,f){
+  if(f||(e&&e.target===document.getElementById('modal-overlay'))){
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+}
+
+function hataGoster(){
+  document.getElementById('cards-grid').innerHTML=`
+    <div style="grid-column:1/-1;text-align:center;padding:48px;background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.06)">
+      <div style="font-size:1.1rem;font-weight:800;color:#7B61FF;margin-bottom:8px">icerikler.js bulunamadı</div>
+      <p style="font-size:.875rem;color:#6b7280;line-height:1.7;font-weight:600">
+        <code style="background:#f3f4f6;padding:2px 8px;border-radius:4px">admin.html</code>'den giriş yap →
+        <strong>Dışa Aktar</strong> → <code style="background:#f3f4f6;padding:2px 8px;border-radius:4px">icerikler.js</code>'yi bu klasöre koy.
+      </p>
+    </div>`;
+}
+</script>
+</body>
+</html>
