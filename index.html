@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kodbino — Hayal Et, Kodla, Geliştir!</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Netlify Identity — davet ve şifre sıfırlama tokenlarını yakalar -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -719,6 +721,29 @@ function hataGoster(){
         <strong>Dışa Aktar</strong> → <code style="background:#f3f4f6;padding:2px 8px;border-radius:4px">icerikler.js</code>'yi bu klasöre koy.
       </p>
     </div>`;
+}
+</script>
+
+<!-- Netlify Identity token yakalayıcı -->
+<script>
+// Davet, şifre sıfırlama veya onay tokenı varsa widget'ı aç
+// Kullanıcı şifresini belirledikten sonra admin.html'e yönlendir
+if(typeof netlifyIdentity !== 'undefined') {
+  const hash = window.location.hash;
+  if(hash && (
+    hash.includes('invite_token') ||
+    hash.includes('recovery_token') ||
+    hash.includes('confirmation_token')
+  )) {
+    // Kısa gecikme ile widget'ı aç (sayfa yüklenmesini bekle)
+    setTimeout(() => netlifyIdentity.open(), 500);
+  }
+
+  netlifyIdentity.on('login', function(user) {
+    netlifyIdentity.close();
+    // Giriş yapıldıktan sonra admin paneline yönlendir
+    window.location.href = '/admin.html';
+  });
 }
 </script>
 </body>
