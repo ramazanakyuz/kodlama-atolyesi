@@ -86,6 +86,7 @@ function panelAc(user) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('panel').style.display = 'flex';
   document.getElementById('user-email').textContent = user.email;
+  sidebarYenile();
   ozetYenile();
 }
 function loginEkraniGoster() {
@@ -386,21 +387,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </button>
 
     <div class="sidebar-sec">İçerikler</div>
-    <button class="nav-item" onclick="goster('scratch')" id="nav-scratch">
-      <span class="nav-dot" style="background:var(--scratch)"></span>Scratch
-    </button>
-    <button class="nav-item" onclick="goster('tinkercad')" id="nav-tinkercad">
-      <span class="nav-dot" style="background:var(--tinkercad)"></span>Tinkercad
-    </button>
-    <button class="nav-item" onclick="goster('arduino')" id="nav-arduino">
-      <span class="nav-dot" style="background:var(--arduino)"></span>Arduino
-    </button>
-    <button class="nav-item" onclick="goster('algoritma')" id="nav-algoritma">
-      <span class="nav-dot" style="background:var(--algoritma)"></span>Algoritma
-    </button>
-    <button class="nav-item" onclick="goster('yapay_zeka')" id="nav-yapay_zeka">
-      <span class="nav-dot" style="background:var(--yapayzeka)"></span>Yapay Zeka
-    </button>
+    <div id="sidebar-menuler"></div>
 
     <div class="sidebar-sec">Yönetim</div>
     <button class="nav-item" onclick="goster('menuler')" id="nav-menuler">
@@ -429,31 +416,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="card"><div class="sec-title">Son Eklenenler</div><div class="item-list" id="son-eklenenler"></div></div>
     </div>
 
-    <!-- BÖLÜMLER -->
-    <div class="page" id="page-scratch">
-      <div class="page-header"><h1>🐱 Scratch</h1><p>Scratch bölümündeki içerikleri yönet</p></div>
-      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('scratch')">+ Yeni Ekle</button></div>
-      <div class="item-list" id="list-scratch"></div>
-    </div>
-    <div class="page" id="page-tinkercad">
-      <div class="page-header"><h1>🔧 Tinkercad</h1><p>Tinkercad bölümündeki içerikleri yönet</p></div>
-      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('tinkercad')">+ Yeni Ekle</button></div>
-      <div class="item-list" id="list-tinkercad"></div>
-    </div>
-    <div class="page" id="page-arduino">
-      <div class="page-header"><h1>♾ Arduino</h1><p>Arduino bölümündeki içerikleri yönet</p></div>
-      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('arduino')">+ Yeni Ekle</button></div>
-      <div class="item-list" id="list-arduino"></div>
-    </div>
-    <div class="page" id="page-algoritma">
-      <div class="page-header"><h1>🧩 Algoritma</h1><p>Algoritma bölümündeki içerikleri yönet</p></div>
-      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('algoritma')">+ Yeni Ekle</button></div>
-      <div class="item-list" id="list-algoritma"></div>
-    </div>
-    <div class="page" id="page-yapay_zeka">
-      <div class="page-header"><h1>🤖 Yapay Zeka</h1><p>Yapay Zeka bölümündeki içerikleri yönet</p></div>
-      <div class="sec-title">İçerikler<button class="btn-new" onclick="modalAc('yapay_zeka')">+ Yeni Ekle</button></div>
-      <div class="item-list" id="list-yapay_zeka"></div>
+    <!-- DİNAMİK BÖLÜM SAYFASI — tüm menüler buraya render edilir -->
+    <div class="page" id="page-bolum">
+      <div class="page-header">
+        <h1 id="bolum-baslik">Bölüm</h1>
+        <p id="bolum-aciklama">İçerikleri yönet</p>
+      </div>
+      <div class="sec-title" id="bolum-sec-title">
+        İçerikler
+        <button class="btn-new" id="bolum-yeni-btn">+ Yeni Ekle</button>
+      </div>
+      <div class="item-list" id="list-bolum"></div>
     </div>
 
     <!-- MENÜ YÖNETİMİ -->
@@ -563,14 +536,55 @@ function sifreSifirla(){
   document.getElementById('sifre-msg').textContent='Google hesabın şifresini Google üzerinden yönetebilirsin.';
 }
 
+/* MENÜ RENKLERİ */
+const MENU_RENK = {
+  scratch:'#f97316',tinkercad:'#f59e0b',arduino:'#0ea5a0',
+  algoritma:'#f97316',yapay_zeka:'#8b5cf6'
+};
+const MENU_EMOJI = {
+  scratch:'🐱',tinkercad:'🔧',arduino:'♾',algoritma:'🧩',yapay_zeka:'🤖'
+};
+function menuRenk(id){ return MENU_RENK[id]||'#7B61FF'; }
+function menuEmoji(id){ return MENU_EMOJI[id]||'📌'; }
+
+/* SİDEBAR DİNAMİK */
+function sidebarYenile(){
+  const menuler=(D.menuler||[]).sort((a,b)=>a.sira-b.sira);
+  document.getElementById('sidebar-menuler').innerHTML = menuler.map(m=>`
+    <button class="nav-item" onclick="bolumGoster('${m.id}')" id="nav-${m.id}">
+      <span class="nav-dot" style="background:${menuRenk(m.id)}"></span>
+      ${menuEmoji(m.id)} ${esc(m.baslik)}
+      ${m.aktif===false?'<span style="font-size:.6rem;color:#ef4444;margin-left:auto">Pasif</span>':''}
+    </button>`).join('');
+}
+
+/* BÖLÜM SAYFASI GÖSTER */
+let _aktifBolum = '';
+function bolumGoster(id){
+  _aktifBolum = id;
+  const m = (D.menuler||[]).find(x=>x.id===id)||{baslik:id};
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-bolum').classList.add('active');
+  const navEl = document.getElementById('nav-'+id);
+  if(navEl) navEl.classList.add('active');
+
+  document.getElementById('bolum-baslik').textContent = menuEmoji(id)+' '+m.baslik;
+  document.getElementById('bolum-aciklama').textContent = m.baslik+' bölümündeki içerikleri yönet';
+  document.getElementById('bolum-yeni-btn').onclick = ()=>modalAc(id);
+  listeYenile(id);
+}
+
 /* NAVİGASYON */
 function goster(s){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+s).classList.add('active');
-  document.getElementById('nav-'+s).classList.add('active');
+  const sayfaId = 'page-'+s;
+  const sayfaEl = document.getElementById(sayfaId);
+  if(sayfaEl) sayfaEl.classList.add('active');
+  const navEl = document.getElementById('nav-'+s);
+  if(navEl) navEl.classList.add('active');
   if(s==='ozet') ozetYenile();
-  else if(['scratch','tinkercad','arduino','algoritma','yapay_zeka'].includes(s)) listeYenile(s);
   else if(s==='menuler') menuYonetimYenile();
   else if(s==='site') siteBilgYukle();
   else if(s==='disaaktar') onizlemeGuncelle();
@@ -579,20 +593,16 @@ function goster(s){
 /* ÖZET */
 function ozetYenile(){
   const b=D.bolumler||{};
-  const stats=[
-    {id:'scratch',label:'Scratch',renk:'#f97316'},{id:'tinkercad',label:'Tinkercad',renk:'#f59e0b'},
-    {id:'arduino',label:'Arduino',renk:'#0ea5a0'},{id:'algoritma',label:'Algoritma',renk:'#f97316'},
-    {id:'yapay_zeka',label:'Yapay Zeka',renk:'#8b5cf6'}
-  ];
-  document.getElementById('stat-grid').innerHTML=stats.map(s=>`
-    <div class="stat-card">
-      <div class="stat-num" style="color:${s.renk}">${(b[s.id]||[]).length}</div>
-      <div class="stat-label">${s.label}</div>
+  const menuler=(D.menuler||[]).sort((a,b)=>a.sira-b.sira);
+  document.getElementById('stat-grid').innerHTML=menuler.map(m=>`
+    <div class="stat-card" onclick="bolumGoster('${m.id}')" style="cursor:pointer">
+      <div class="stat-num" style="color:${menuRenk(m.id)}">${(b[m.id]||[]).length}</div>
+      <div class="stat-label">${menuEmoji(m.id)} ${esc(m.baslik)}</div>
     </div>`).join('');
   const tumIcerik=Object.entries(b).flatMap(([k,v])=>v.map(i=>({...i,bolum:k}))).slice(-6).reverse();
   document.getElementById('son-eklenenler').innerHTML=tumIcerik.length
     ?tumIcerik.map(i=>`<div class="item-row">
-      <span class="item-badge" style="background:var(--purple-ll);color:var(--purple)">${i.bolum}</span>
+      <span class="item-badge" style="background:${menuRenk(i.bolum)}22;color:${menuRenk(i.bolum)}">${menuEmoji(i.bolum)} ${esc(i.bolum)}</span>
       <div style="flex:1"><div class="item-title">${esc(i.baslik)}</div></div></div>`).join('')
     :'<div class="empty">Henüz içerik eklenmedi.</div>';
 }
@@ -600,15 +610,15 @@ function ozetYenile(){
 /* LİSTE */
 function listeYenile(bolum){
   const liste=(D.bolumler||{})[bolum]||[];
-  document.getElementById('list-'+bolum).innerHTML=liste.length
+  document.getElementById('list-bolum').innerHTML=liste.length
     ?liste.map((item,i)=>`<div class="item-row">
-      <span class="item-badge" style="background:var(--purple-ll);color:var(--purple)">${item.emoji||'📌'}</span>
+      <span class="item-badge" style="background:${menuRenk(bolum)}22;color:${menuRenk(bolum)}">${item.emoji||menuEmoji(bolum)}</span>
       <div style="flex:1"><div class="item-title">${esc(item.baslik)}</div><span class="item-sub">${esc(item.kisa_aciklama)}</span></div>
       <div class="item-actions">
         <button class="btn-icon" onclick="modalAc('${bolum}',${i})">Düzenle</button>
         <button class="btn-icon del" onclick="sil('${bolum}',${i})">Sil</button>
       </div></div>`).join('')
-    :`<div class="empty">Henüz içerik eklenmedi.</div>`;
+    :`<div class="empty">Henüz içerik eklenmedi. <button class="btn-new" style="margin-left:8px" onclick="modalAc('${bolum}')">+ Ekle</button></div>`;
 }
 
 /* MODAL */
@@ -694,7 +704,7 @@ function yeniMenuModal(){
   D.bolumler[temizId]=[];
   menuYonetimYenile();toast(`"${baslik}" menüsü eklendi!`);
 }
-function menuKaydet(){veriKaydet(D);toast('Menü değişiklikleri kaydedildi ✓')}
+function menuKaydet(){veriKaydet(D);sidebarYenile();ozetYenile();toast('Menü değişiklikleri kaydedildi ✓')}
 
 /* SİTE BİLGİLERİ */
 function siteBilgYukle(){
