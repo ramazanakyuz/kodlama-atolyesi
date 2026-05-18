@@ -531,7 +531,7 @@ footer{
   </div>
 </div>
 
-<script type="module">
+<script>
 const CC={
   scratch:{
     r:'#f97316',bg:'#fff8f0',isim:'Scratch',
@@ -619,32 +619,8 @@ const CC={
 
 function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
 
-// Firebase'den veri yükle
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBWV9SEuGtShSUKQbonekTO8HeGIOJO5w0",
-  authDomain: "kodbino-5fa6f.firebaseapp.com",
-  projectId: "kodbino-5fa6f",
-  storageBucket: "kodbino-5fa6f.firebasestorage.app",
-  messagingSenderId: "912558719816",
-  appId: "1:912558719816:web:7f0d82e40762320816a97d"
-};
-
-const _app = initializeApp(firebaseConfig);
-const _db = getFirestore(_app);
-
-window.addEventListener('load', async () => {
-  try {
-    const snap = await getDoc(doc(_db, 'admin', 'icerik'));
-    window.ICERIK = snap.exists() ? snap.data() : {};
-  } catch(e) {
-    window.ICERIK = {};
-  }
+window.addEventListener('load', () => {
   kartsGoster();
-  const footer = window.ICERIK?.site?.footer;
-  if(footer) document.getElementById('footer-text').textContent = footer;
   document.addEventListener('keydown', e => { if(e.key==='Escape') km(null,true); });
 });
 
@@ -747,8 +723,39 @@ function km(e,f){
     document.body.style.overflow='';
   }
 }
+window.bolumListesiAc=bolumListesiAc;
+window.acModal=acModal;
+window.km=km;
+window.bolumAc=bolumAc;
+window.kartsGoster=kartsGoster;
+window.esc=esc;
+window.ikonHTML=ikonHTML;
+</script>
 
+<!-- Firebase veri yükleme -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBWV9SEuGtShSUKQbonekTO8HeGIOJO5w0",
+  authDomain: "kodbino-5fa6f.firebaseapp.com",
+  projectId: "kodbino-5fa6f",
+  storageBucket: "kodbino-5fa6f.firebasestorage.app",
+  messagingSenderId: "912558719816",
+  appId: "1:912558719816:web:7f0d82e40762320816a97d"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+try {
+  const snap = await getDoc(doc(db, 'admin', 'icerik'));
+  window.ICERIK = snap.exists() ? snap.data() : {};
+} catch(e) {
+  window.ICERIK = {};
+}
+const footer = window.ICERIK?.site?.footer;
+if(footer) document.getElementById('footer-text').textContent = footer;
+window.kartsGoster();
 </script>
 
 
