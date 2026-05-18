@@ -612,7 +612,7 @@ window.addEventListener('load',()=>{
 
 function ikonHTML(id, c){
   // PNG varsa onu kullan, yoksa SVG fallback
-  const pngMap={scratch:'scratch.png',arduino:'arduino.png',tinkercad:'tinkercad.png',algoritma:'algoritma.png',yapay_zeka:'yapayzeka.png'};
+ const pngMap={scratch:'./scratch.png',arduino:'./arduino.png',tinkercad:'./tinkercad.png',algoritma:'./algoritma.png',yapay_zeka:'./yapayzeka.png'}
   const png=pngMap[id];
   if(png) return `<img src="${png}" alt="${id}" width="64" height="64" style="object-fit:contain"
     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">${c.svg?`<span style="display:none;align-items:center;justify-content:center">${c.svg}</span>`:''}`;
